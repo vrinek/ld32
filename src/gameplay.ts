@@ -3,8 +3,8 @@ class Gameplay extends Phaser.State {
   public competitors: Array<Competitor>;
 
   init() {
-    this.player = new PlayerCompany();
-    this.competitors = [new Competitor(this.player)];
+    this.player = new PlayerCompany(this.rnd);
+    this.competitors = [new Competitor(this.player, this.rnd)];
   }
 
   preload() {

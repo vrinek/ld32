@@ -6,8 +6,8 @@ var __extends = this.__extends || function (d, b) {
 };
 var Competitor = (function (_super) {
     __extends(Competitor, _super);
-    function Competitor(player) {
-        _super.call(this, 100);
+    function Competitor(player, rnd) {
+        _super.call(this, 100, rnd);
         this.player = player;
         this.nextAttackTime = 0;
     }
@@ -25,7 +25,7 @@ var Competitor = (function (_super) {
     Competitor.prototype.create = function (game) {
         this.group = game.make.group();
         this.group.add(game.make.image(0, 0, "background"));
-        this.group.add(game.make.image(10, 10, game.rnd.pick([
+        this.group.add(game.make.image(10, 10, this.rnd.pick([
             "building01", "building02", "building03", "building04", "building05", "building06"
         ])));
         this.group.add(game.make.image(185, 45, "budget_icon"));

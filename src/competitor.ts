@@ -6,8 +6,8 @@ class Competitor extends Company {
   private budgetDisplay: Phaser.Text;
   private growthDisplay: Phaser.Text;
 
-  constructor (private player: PlayerCompany) {
-    super(100);
+  constructor (private player: PlayerCompany, rnd: Phaser.RandomDataGenerator) {
+    super(100, rnd);
   }
 
   preload(load: Phaser.Loader) {
@@ -32,7 +32,7 @@ class Competitor extends Company {
     ));
 
     this.group.add(game.make.image(
-      10, 10, game.rnd.pick([
+      10, 10, this.rnd.pick([
         "building01", "building02", "building03", "building04", "building05", "building06"
       ])
     ));

@@ -6,8 +6,8 @@ var __extends = this.__extends || function (d, b) {
 };
 var PlayerCompany = (function (_super) {
     __extends(PlayerCompany, _super);
-    function PlayerCompany() {
-        _super.call(this, 200);
+    function PlayerCompany(rnd) {
+        _super.call(this, 200, rnd);
     }
     PlayerCompany.prototype.preload = function (load) {
         load.image("building", "/images/player/building.png");

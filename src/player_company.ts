@@ -3,8 +3,8 @@ class PlayerCompany extends Company {
   private budgetDisplay: Phaser.Text;
   private growthDisplay: Phaser.Text;
 
-  constructor() {
-    super(200);
+  constructor(rnd: Phaser.RandomDataGenerator) {
+    super(200, rnd);
   }
 
   preload(load: Phaser.Loader) {

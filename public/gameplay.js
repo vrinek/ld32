@@ -10,8 +10,8 @@ var Gameplay = (function (_super) {
         _super.apply(this, arguments);
     }
     Gameplay.prototype.init = function () {
-        this.player = new PlayerCompany();
-        this.competitors = [new Competitor(this.player)];
+        this.player = new PlayerCompany(this.rnd);
+        this.competitors = [new Competitor(this.player, this.rnd)];
     };
     Gameplay.prototype.preload = function () {
         for (var i = 0; i < this.competitors.length; i++) {
