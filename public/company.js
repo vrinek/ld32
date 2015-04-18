@@ -4,8 +4,14 @@ var Company = (function () {
         this.growth = 0.02;
     }
     Company.prototype.attack = function (otherCompany) {
-        this.budget -= Company.costPerAttack;
-        otherCompany.growth -= 0.005;
+        if (this.budget >= Company.costPerAttack) {
+            this.budget -= Company.costPerAttack;
+            otherCompany.growth -= 0.005;
+            return true;
+        }
+        else {
+            return false;
+        }
     };
     Company.costPerAttack = 10;
     return Company;

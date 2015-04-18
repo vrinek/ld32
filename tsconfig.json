@@ -15,6 +15,7 @@
     "files": [
         "./src/app.ts",
         "./src/company.ts",
+        "./src/competitor.ts",
         "./src/game.ts",
         "./lib/p2.d.ts",
         "./lib/phaser.d.ts",

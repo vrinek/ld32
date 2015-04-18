@@ -6,7 +6,13 @@ class Company {
   }
 
   attack(otherCompany: Company) {
-    this.budget -= Company.costPerAttack;
-    otherCompany.growth -= 0.005;
+    if(this.budget >= Company.costPerAttack) {
+      this.budget -= Company.costPerAttack;
+      otherCompany.growth -= 0.005;
+
+      return true;
+    } else {
+      return false;
+    }
   }
 }
