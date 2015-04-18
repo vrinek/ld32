@@ -3,8 +3,8 @@ class Gameplay extends Phaser.State {
   public competitors: Array<Competitor>;
 
   init() {
-    this.competitors = [new Competitor()];
     this.player = new PlayerCompany();
+    this.competitors = [new Competitor(this.player)];
   }
 
   preload() {
@@ -18,7 +18,7 @@ class Gameplay extends Phaser.State {
   create() {
     for (let i = 0; i < this.competitors.length; i++) {
       var competitor = this.competitors[i];
-      var group = competitor.create(this.game, this.player);
+      var group = competitor.create(this.game);
       group.position.setTo(500, 100);
       this.world.add(group);
     }
@@ -30,9 +30,9 @@ class Gameplay extends Phaser.State {
   update() {
     for (let i = 0; i < this.competitors.length; i++) {
       var competitor = this.competitors[i];
-      competitor.update();
+      competitor.update(this.time);
     }
-    this.player.update();
+    this.player.update(this.time);
   }
 
   render() {

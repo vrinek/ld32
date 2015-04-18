@@ -6,9 +6,10 @@ var __extends = this.__extends || function (d, b) {
 };
 var Competitor = (function (_super) {
     __extends(Competitor, _super);
-    function Competitor() {
+    function Competitor(player) {
         _super.call(this, 100);
-        this.lastAttackTime = 0;
+        this.player = player;
+        this.nextAttackTime = 0;
     }
     Competitor.prototype.preload = function (load) {
         load.spritesheet("attack_button", "/images/competitors/attack_button.png", 93, 51);
@@ -21,7 +22,7 @@ var Competitor = (function (_super) {
         load.image("building05", "/images/competitors/buildings/building05.png");
         load.image("building06", "/images/competitors/buildings/building06.png");
     };
-    Competitor.prototype.create = function (game, player) {
+    Competitor.prototype.create = function (game) {
         this.group = game.make.group();
         this.group.add(game.make.image(0, 0, "background"));
         this.group.add(game.make.image(10, 10, game.rnd.pick([
@@ -35,15 +36,23 @@ var Competitor = (function (_super) {
         this.growthDisplay = game.make.text(180, 70, "XX %", { font: "20px Arial", fill: "#fff", align: "center" });
         this.growthDisplay.anchor.set(1, 0);
         this.group.add(this.growthDisplay);
-        var attackButton = new AttackButton(game.make, player, this);
+        var attackButton = new AttackButton(game.make, this.player, this);
         attackButton.position.setTo(64, 100);
         this.group.add(attackButton);
         return this.group;
+    };
+    Competitor.prototype.update = function (time) {
+        this.adjustBudget(60);
+        if (this.nextAttackTime < time.time) {
+            console.debug("Attacking!!!");
+            this.attack(this.player);
+            this.nextAttackTime = time.time + Competitor.delayToAttack;
+        }
     };
     Competitor.prototype.render = function () {
         this.budgetDisplay.text = Math.floor(this.budget).toString();
         this.growthDisplay.text = Math.floor(this.growth * 100 * 10) / 10 + " %";
     };
-    Competitor.delayToAttack = 3;
+    Competitor.delayToAttack = 3000;
     return Competitor;
 })(Company);

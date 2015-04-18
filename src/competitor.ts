@@ -1,12 +1,12 @@
 class Competitor extends Company {
-  static delayToAttack = 3; // 3 seconds
-  private lastAttackTime = 0;
+  static delayToAttack = 3000; // 3 seconds
+  private nextAttackTime = 0;
 
   private group: Phaser.Group;
   private budgetDisplay: Phaser.Text;
   private growthDisplay: Phaser.Text;
 
-  constructor () {
+  constructor (private player: PlayerCompany) {
     super(100);
   }
 
@@ -24,7 +24,7 @@ class Competitor extends Company {
     load.image("building06", "/images/competitors/buildings/building06.png");
   }
 
-  create(game: Phaser.Game, player: PlayerCompany) {
+  create(game: Phaser.Game) {
     this.group = game.make.group();
 
     this.group.add(game.make.image(
@@ -63,11 +63,21 @@ class Competitor extends Company {
     this.growthDisplay.anchor.set(1, 0);
     this.group.add(this.growthDisplay);
 
-    var attackButton = new AttackButton(game.make, player, this);
+    var attackButton = new AttackButton(game.make, this.player, this);
     attackButton.position.setTo(64, 100);
     this.group.add(attackButton);
 
     return this.group;
+  }
+
+  update(time: Phaser.Time) {
+    this.adjustBudget(60);
+
+    if(this.nextAttackTime < time.time) {
+      console.debug("Attacking!!!");
+      this.attack(this.player);
+      this.nextAttackTime = time.time + Competitor.delayToAttack;
+    }
   }
 
   render() {

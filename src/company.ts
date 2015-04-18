@@ -16,8 +16,7 @@ class Company {
     }
   }
 
-  update() {
-    var fps = 60;
+  adjustBudget(fps) {
     this.budget *= (1 + this.growth/fps);
   }
 }

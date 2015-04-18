@@ -23,6 +23,9 @@ var PlayerCompany = (function (_super) {
         this.group.add(this.growthDisplay);
         return this.group;
     };
+    PlayerCompany.prototype.update = function (time) {
+        this.adjustBudget(60);
+    };
     PlayerCompany.prototype.render = function () {
         this.budgetDisplay.text = Math.floor(this.budget).toString();
         this.growthDisplay.text = Math.floor(this.growth * 100 * 10) / 10 + " %";

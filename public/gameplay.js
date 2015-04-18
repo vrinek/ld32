@@ -10,8 +10,8 @@ var Gameplay = (function (_super) {
         _super.apply(this, arguments);
     }
     Gameplay.prototype.init = function () {
-        this.competitors = [new Competitor()];
         this.player = new PlayerCompany();
+        this.competitors = [new Competitor(this.player)];
     };
     Gameplay.prototype.preload = function () {
         for (var i = 0; i < this.competitors.length; i++) {
@@ -23,7 +23,7 @@ var Gameplay = (function (_super) {
     Gameplay.prototype.create = function () {
         for (var i = 0; i < this.competitors.length; i++) {
             var competitor = this.competitors[i];
-            var group = competitor.create(this.game, this.player);
+            var group = competitor.create(this.game);
             group.position.setTo(500, 100);
             this.world.add(group);
         }
@@ -34,9 +34,9 @@ var Gameplay = (function (_super) {
     Gameplay.prototype.update = function () {
         for (var i = 0; i < this.competitors.length; i++) {
             var competitor = this.competitors[i];
-            competitor.update();
+            competitor.update(this.time);
         }
-        this.player.update();
+        this.player.update(this.time);
     };
     Gameplay.prototype.render = function () {
         for (var i = 0; i < this.competitors.length; i++) {
