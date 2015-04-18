@@ -10,16 +10,16 @@ var Competitor = (function (_super) {
         _super.call(this, 100);
         this.lastAttackTime = 0;
     }
-    Competitor.prototype.preload = function (loader) {
-        loader.spritesheet("attack_button", "/images/competitors/attack_button.png", 93, 51);
-        loader.image("background", "/images/competitors/background.png");
-        loader.image("budget_icon", "/images/competitors/budget_icon.png");
-        loader.image("building01", "/images/competitors/buildings/building01.png");
-        loader.image("building02", "/images/competitors/buildings/building02.png");
-        loader.image("building03", "/images/competitors/buildings/building03.png");
-        loader.image("building04", "/images/competitors/buildings/building04.png");
-        loader.image("building05", "/images/competitors/buildings/building05.png");
-        loader.image("building06", "/images/competitors/buildings/building06.png");
+    Competitor.prototype.preload = function (load) {
+        load.spritesheet("attack_button", "/images/competitors/attack_button.png", 93, 51);
+        load.image("background", "/images/competitors/background.png");
+        load.image("budget_icon", "/images/competitors/budget_icon.png");
+        load.image("building01", "/images/competitors/buildings/building01.png");
+        load.image("building02", "/images/competitors/buildings/building02.png");
+        load.image("building03", "/images/competitors/buildings/building03.png");
+        load.image("building04", "/images/competitors/buildings/building04.png");
+        load.image("building05", "/images/competitors/buildings/building05.png");
+        load.image("building06", "/images/competitors/buildings/building06.png");
     };
     Competitor.prototype.create = function (game, player) {
         this.group = game.make.group();

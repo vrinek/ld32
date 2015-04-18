@@ -19,6 +19,7 @@
         "./src/competitor.ts",
         "./src/game.ts",
         "./src/gameplay.ts",
+        "./src/player_company.ts",
         "./lib/p2.d.ts",
         "./lib/phaser.d.ts",
         "./lib/pixi.d.ts"

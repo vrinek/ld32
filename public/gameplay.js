@@ -11,13 +11,14 @@ var Gameplay = (function (_super) {
     }
     Gameplay.prototype.init = function () {
         this.competitors = [new Competitor()];
-        this.player = new Company(1000);
+        this.player = new PlayerCompany();
     };
     Gameplay.prototype.preload = function () {
         for (var i = 0; i < this.competitors.length; i++) {
             var competitor = this.competitors[i];
             competitor.preload(this.game.load);
         }
+        this.player.preload(this.game.load);
     };
     Gameplay.prototype.create = function () {
         for (var i = 0; i < this.competitors.length; i++) {
@@ -26,18 +27,23 @@ var Gameplay = (function (_super) {
             group.position.setTo(500, 100);
             this.world.add(group);
         }
+        var group = this.player.create(this.game);
+        group.position.setTo(100, 100);
+        this.world.add(group);
     };
     Gameplay.prototype.update = function () {
         for (var i = 0; i < this.competitors.length; i++) {
             var competitor = this.competitors[i];
             competitor.update();
         }
+        this.player.update();
     };
     Gameplay.prototype.render = function () {
         for (var i = 0; i < this.competitors.length; i++) {
             var competitor = this.competitors[i];
             competitor.render();
         }
+        this.player.render();
     };
     return Gameplay;
 })(Phaser.State);
