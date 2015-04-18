@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "outDir": "./public/",
+        "noLib": false
+    },
+    "filesGlob": [
+        "./src/**/*.ts",
+        "./lib/**/*.d.ts"
+    ],
+    "files": [
+        "./src/app.ts",
+        "./src/company.ts",
+        "./src/game.ts",
+        "./lib/p2.d.ts",
+        "./lib/phaser.d.ts",
+        "./lib/pixi.d.ts"
+    ]
+}
