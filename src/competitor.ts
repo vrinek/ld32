@@ -1,5 +1,3 @@
-/// <reference path="company.ts" />
-
 class Competitor extends Company {
   constructor (private game: Phaser.Game) {
     super(20);
