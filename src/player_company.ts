@@ -2,6 +2,7 @@ class PlayerCompany extends Company {
   private group: Phaser.Group;
   private budgetDisplay: Phaser.Text;
   private growthDisplay: Phaser.Text;
+  private growthIndicator: Phaser.Image;
 
   constructor(rnd: Phaser.RandomDataGenerator) {
     super(200, rnd);
@@ -9,6 +10,8 @@ class PlayerCompany extends Company {
 
   preload(load: Phaser.Loader) {
     load.image("building", "/images/player/building.png");
+    load.image("large_growth_up", "/images/player/growth_up.png");
+    load.image("large_growth_down", "/images/player/growth_down.png");
   }
 
   create(game: Phaser.Game) {
@@ -32,6 +35,11 @@ class PlayerCompany extends Company {
     this.growthDisplay.anchor.set(1, 0);
     this.group.add(this.growthDisplay);
 
+    this.growthIndicator = game.make.image(
+      180, 70, "growth_up"
+    );
+    this.group.add(this.growthIndicator);
+
     return this.group;
   }
 
@@ -42,5 +50,11 @@ class PlayerCompany extends Company {
   render() {
     this.budgetDisplay.text = Math.floor(this.budget).toString();
     this.growthDisplay.text = Math.floor(this.growth*100*10)/10 + " %";
+
+    if(this.growth > 0) {
+      this.growthIndicator.loadTexture("large_growth_up", 0);
+    } else {
+      this.growthIndicator.loadTexture("large_growth_down", 0);
+    }
   }
 }

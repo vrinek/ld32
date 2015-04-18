@@ -11,6 +11,8 @@ var PlayerCompany = (function (_super) {
     }
     PlayerCompany.prototype.preload = function (load) {
         load.image("building", "/images/player/building.png");
+        load.image("large_growth_up", "/images/player/growth_up.png");
+        load.image("large_growth_down", "/images/player/growth_down.png");
     };
     PlayerCompany.prototype.create = function (game) {
         this.group = game.make.group();
@@ -21,6 +23,8 @@ var PlayerCompany = (function (_super) {
         this.growthDisplay = game.make.text(180, 70, "XX %", { font: "20px Arial", fill: "#fff", align: "center" });
         this.growthDisplay.anchor.set(1, 0);
         this.group.add(this.growthDisplay);
+        this.growthIndicator = game.make.image(180, 70, "growth_up");
+        this.group.add(this.growthIndicator);
         return this.group;
     };
     PlayerCompany.prototype.update = function (time) {
@@ -29,6 +33,12 @@ var PlayerCompany = (function (_super) {
     PlayerCompany.prototype.render = function () {
         this.budgetDisplay.text = Math.floor(this.budget).toString();
         this.growthDisplay.text = Math.floor(this.growth * 100 * 10) / 10 + " %";
+        if (this.growth > 0) {
+            this.growthIndicator.loadTexture("large_growth_up", 0);
+        }
+        else {
+            this.growthIndicator.loadTexture("large_growth_down", 0);
+        }
     };
     return PlayerCompany;
 })(Company);

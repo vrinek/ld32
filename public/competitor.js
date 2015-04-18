@@ -15,6 +15,8 @@ var Competitor = (function (_super) {
         load.spritesheet("attack_button", "/images/competitors/attack_button.png", 93, 51);
         load.image("background", "/images/competitors/background.png");
         load.image("budget_icon", "/images/competitors/budget_icon.png");
+        load.image("small_growth_up", "/images/competitors/growth_up.png");
+        load.image("small_growth_down", "/images/competitors/growth_down.png");
         load.image("building01", "/images/competitors/buildings/building01.png");
         load.image("building02", "/images/competitors/buildings/building02.png");
         load.image("building03", "/images/competitors/buildings/building03.png");
@@ -36,6 +38,8 @@ var Competitor = (function (_super) {
         this.growthDisplay = game.make.text(180, 70, "XX %", { font: "20px Arial", fill: "#fff", align: "center" });
         this.growthDisplay.anchor.set(1, 0);
         this.group.add(this.growthDisplay);
+        this.growthIndicator = game.make.image(180, 70, "growth_up");
+        this.group.add(this.growthIndicator);
         var attackButton = new AttackButton(game.make, this.player, this);
         attackButton.position.setTo(64, 100);
         this.group.add(attackButton);
@@ -52,6 +56,12 @@ var Competitor = (function (_super) {
     Competitor.prototype.render = function () {
         this.budgetDisplay.text = Math.floor(this.budget).toString();
         this.growthDisplay.text = Math.floor(this.growth * 100 * 10) / 10 + " %";
+        if (this.growth > 0) {
+            this.growthIndicator.loadTexture("small_growth_up", 0);
+        }
+        else {
+            this.growthIndicator.loadTexture("small_growth_down", 0);
+        }
     };
     Competitor.delayToAttack = 3000;
     return Competitor;

@@ -5,6 +5,7 @@ class Competitor extends Company {
   private group: Phaser.Group;
   private budgetDisplay: Phaser.Text;
   private growthDisplay: Phaser.Text;
+  private growthIndicator: Phaser.Image;
 
   constructor (private player: PlayerCompany, rnd: Phaser.RandomDataGenerator) {
     super(100, rnd);
@@ -15,6 +16,8 @@ class Competitor extends Company {
 
     load.image("background", "/images/competitors/background.png");
     load.image("budget_icon", "/images/competitors/budget_icon.png");
+    load.image("small_growth_up", "/images/competitors/growth_up.png");
+    load.image("small_growth_down", "/images/competitors/growth_down.png");
 
     load.image("building01", "/images/competitors/buildings/building01.png");
     load.image("building02", "/images/competitors/buildings/building02.png");
@@ -63,6 +66,11 @@ class Competitor extends Company {
     this.growthDisplay.anchor.set(1, 0);
     this.group.add(this.growthDisplay);
 
+    this.growthIndicator = game.make.image(
+      180, 70, "growth_up"
+    );
+    this.group.add(this.growthIndicator);
+
     var attackButton = new AttackButton(game.make, this.player, this);
     attackButton.position.setTo(64, 100);
     this.group.add(attackButton);
@@ -83,5 +91,11 @@ class Competitor extends Company {
   render() {
     this.budgetDisplay.text = Math.floor(this.budget).toString();
     this.growthDisplay.text = Math.floor(this.growth*100*10)/10 + " %";
+
+    if(this.growth > 0) {
+      this.growthIndicator.loadTexture("small_growth_up", 0);
+    } else {
+      this.growthIndicator.loadTexture("small_growth_down", 0);
+    }
   }
 }
