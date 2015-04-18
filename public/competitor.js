@@ -7,33 +7,42 @@ var __extends = this.__extends || function (d, b) {
 var Competitor = (function (_super) {
     __extends(Competitor, _super);
     function Competitor() {
-        _super.call(this, 20);
+        _super.call(this, 100);
         this.lastAttackTime = 0;
     }
     Competitor.prototype.preload = function (loader) {
-        loader.image("building01", "/images/building01.png");
-        loader.image("building02", "/images/building02.png");
-        loader.image("building03", "/images/building03.png");
-        loader.image("building04", "/images/building04.png");
-        loader.image("building05", "/images/building05.png");
-        loader.image("button", "/images/button.png");
+        loader.spritesheet("attack_button", "/images/competitors/attack_button.png", 93, 51);
+        loader.image("background", "/images/competitors/background.png");
+        loader.image("budget_icon", "/images/competitors/budget_icon.png");
+        loader.image("building01", "/images/competitors/buildings/building01.png");
+        loader.image("building02", "/images/competitors/buildings/building02.png");
+        loader.image("building03", "/images/competitors/buildings/building03.png");
+        loader.image("building04", "/images/competitors/buildings/building04.png");
+        loader.image("building05", "/images/competitors/buildings/building05.png");
+        loader.image("building06", "/images/competitors/buildings/building06.png");
     };
-    Competitor.prototype.create = function (make, player) {
-        var _this = this;
-        this.group = make.group();
-        this.group.add(make.text(150, 10, "Competitor", { font: "24px Arial", fill: "#ffffff", align: "center" }));
-        this.budgetDisplay = make.text(150, 50, "$ XXX", { font: "24px Arial", fill: "#ffffff", align: "center" });
+    Competitor.prototype.create = function (game, player) {
+        this.group = game.make.group();
+        this.group.add(game.make.image(0, 0, "background"));
+        this.group.add(game.make.image(10, 10, game.rnd.pick([
+            "building01", "building02", "building03", "building04", "building05", "building06"
+        ])));
+        this.group.add(game.make.image(185, 45, "budget_icon"));
+        this.group.add(game.make.text(100, 10, "Name", { font: "24px Arial", fill: "#fff", align: "center" }));
+        this.budgetDisplay = game.make.text(180, 40, "XXX.XXX", { font: "24px Arial", fill: "#fff", align: "center" });
+        this.budgetDisplay.anchor.set(1, 0);
         this.group.add(this.budgetDisplay);
-        this.growthDisplay = make.text(250, 50, "XX %", { font: "24px Arial", fill: "#ffffff", align: "center" });
+        this.growthDisplay = game.make.text(180, 70, "XX %", { font: "20px Arial", fill: "#fff", align: "center" });
+        this.growthDisplay.anchor.set(1, 0);
         this.group.add(this.growthDisplay);
-        this.group.add(make.button(10, 10, "button", function () {
-            player.attack(_this);
-        }));
+        var attackButton = new AttackButton(game.make, player, this);
+        attackButton.position.setTo(64, 100);
+        this.group.add(attackButton);
         return this.group;
     };
     Competitor.prototype.render = function () {
-        this.budgetDisplay.text = "$ " + Math.floor(this.budget);
-        this.growthDisplay.text = Math.floor(this.growth * 1000) / 1000 + " %";
+        this.budgetDisplay.text = Math.floor(this.budget).toString();
+        this.growthDisplay.text = Math.floor(this.growth * 100 * 10) / 10 + " %";
     };
     Competitor.delayToAttack = 3;
     return Competitor;

@@ -11,7 +11,7 @@ var Gameplay = (function (_super) {
     }
     Gameplay.prototype.init = function () {
         this.competitors = [new Competitor()];
-        this.player = new Company(100);
+        this.player = new Company(1000);
     };
     Gameplay.prototype.preload = function () {
         for (var i = 0; i < this.competitors.length; i++) {
@@ -22,7 +22,7 @@ var Gameplay = (function (_super) {
     Gameplay.prototype.create = function () {
         for (var i = 0; i < this.competitors.length; i++) {
             var competitor = this.competitors[i];
-            var group = competitor.create(this.game.make, this.player);
+            var group = competitor.create(this.game, this.player);
             group.position.setTo(500, 100);
             this.world.add(group);
         }
