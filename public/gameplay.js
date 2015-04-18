@@ -9,19 +9,33 @@ var Gameplay = (function (_super) {
     function Gameplay() {
         _super.apply(this, arguments);
     }
-    Gameplay.prototype.preload = function () {
-        this.game.load.image("button", "/images/button.png");
-    };
-    Gameplay.prototype.create = function () {
-        this.competitors = [new Competitor(this.game)];
+    Gameplay.prototype.init = function () {
+        this.competitors = [new Competitor()];
         this.player = new Company(100);
+    };
+    Gameplay.prototype.preload = function () {
         for (var i = 0; i < this.competitors.length; i++) {
             var competitor = this.competitors[i];
-            this.game.add.button(this.game.world.centerX, 10, "button", function () {
-                this.player.attack(competitor);
-                console.debug(this.player);
-                console.debug(competitor);
-            }, this);
+            competitor.preload(this.game.load);
+        }
+    };
+    Gameplay.prototype.create = function () {
+        for (var i = 0; i < this.competitors.length; i++) {
+            var competitor = this.competitors[i];
+            var group = competitor.create(this.game.make, this.player);
+            this.world.add(group);
+        }
+    };
+    Gameplay.prototype.update = function () {
+        for (var i = 0; i < this.competitors.length; i++) {
+            var competitor = this.competitors[i];
+            competitor.update();
+        }
+    };
+    Gameplay.prototype.render = function () {
+        for (var i = 0; i < this.competitors.length; i++) {
+            var competitor = this.competitors[i];
+            competitor.render();
         }
     };
     return Gameplay;

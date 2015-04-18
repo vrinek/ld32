@@ -15,4 +15,9 @@ class Company {
       return false;
     }
   }
+
+  update() {
+    var fps = 60;
+    this.budget *= (1 + this.growth/fps);
+  }
 }

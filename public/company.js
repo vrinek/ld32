@@ -13,6 +13,10 @@ var Company = (function () {
             return false;
         }
     };
+    Company.prototype.update = function () {
+        var fps = 60;
+        this.budget *= (1 + this.growth / fps);
+    };
     Company.costPerAttack = 10;
     return Company;
 })();

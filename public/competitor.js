@@ -6,16 +6,35 @@ var __extends = this.__extends || function (d, b) {
 };
 var Competitor = (function (_super) {
     __extends(Competitor, _super);
-    function Competitor(game) {
+    function Competitor() {
         _super.call(this, 20);
-        this.game = game;
+        this.lastAttackTime = 0;
     }
-    Competitor.prototype.preload = function () {
-        this.game.load.image("building01", "/images/building01.png");
-        this.game.load.image("building02", "/images/building02.png");
-        this.game.load.image("building03", "/images/building03.png");
-        this.game.load.image("building04", "/images/building04.png");
-        this.game.load.image("building05", "/images/building05.png");
+    Competitor.prototype.preload = function (loader) {
+        loader.image("building01", "/images/building01.png");
+        loader.image("building02", "/images/building02.png");
+        loader.image("building03", "/images/building03.png");
+        loader.image("building04", "/images/building04.png");
+        loader.image("building05", "/images/building05.png");
+        loader.image("button", "/images/button.png");
     };
+    Competitor.prototype.create = function (make, player) {
+        var _this = this;
+        this.group = make.group();
+        this.group.add(make.text(150, 10, "Competitor", { font: "24px Arial", fill: "#ffffff", align: "center" }));
+        this.budgetDisplay = make.text(150, 50, "$ XXX", { font: "24px Arial", fill: "#ffffff", align: "center" });
+        this.group.add(this.budgetDisplay);
+        this.growthDisplay = make.text(250, 50, "XX %", { font: "24px Arial", fill: "#ffffff", align: "center" });
+        this.group.add(this.growthDisplay);
+        this.group.add(make.button(10, 10, "button", function () {
+            player.attack(_this);
+        }));
+        return this.group;
+    };
+    Competitor.prototype.render = function () {
+        this.budgetDisplay.text = "$ " + Math.floor(this.budget);
+        this.growthDisplay.text = Math.floor(this.growth * 1000) / 1000 + " %";
+    };
+    Competitor.delayToAttack = 3;
     return Competitor;
 })(Company);
