@@ -1,4 +1,8 @@
 class Competitor extends Company {
+  static startingBudget = 1000;
+  static lowScale = 0.4;
+  static highScale = 1;
+
   private nextAttackTime = 0;
   private alive = true;
 
@@ -11,7 +15,7 @@ class Competitor extends Company {
   protected bulletDuration = 1500; // 1.5 seconds
 
   constructor (gameplay: Gameplay, private player: PlayerCompany, private delayToAttack: number) {
-    super(gameplay, 1000);
+    super(gameplay, Competitor.startingBudget);
   }
 
   get hitTarget(): Phaser.Point {
@@ -50,10 +54,11 @@ class Competitor extends Company {
     this.group.add(this.background);
 
     this.building = game.make.image(
-      10, 10, this.gameplay.rnd.pick([
+      52, 72, this.gameplay.rnd.pick([
         "building01", "building02", "building03", "building04", "building05", "building06"
       ])
     );
+    this.building.anchor.setTo(0.5, 1);
     this.group.add(this.building);
 
     this.group.add(game.make.image(
@@ -105,9 +110,20 @@ class Competitor extends Company {
       this.nextAttackTime = time.time + this.delayToAttack;
     }
 
+    this.scaleByBudget();
+
     if(Math.floor(this.budget) <= 0) {
       this.die();
     }
+  }
+
+  private scaleByBudget() {
+    var effectiveBudget = Phaser.Math.clamp(this.budget, 0, Competitor.startingBudget);
+    var newScale = Phaser.Math.linearInterpolation(
+      [Competitor.lowScale, Competitor.highScale],
+      effectiveBudget/Competitor.startingBudget
+    );
+    this.building.scale.setTo(newScale);
   }
 
   die() {
