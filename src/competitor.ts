@@ -55,6 +55,8 @@ class Competitor extends Company {
     load.image("building04", "/images/competitors/buildings/building04.png");
     load.image("building05", "/images/competitors/buildings/building05.png");
     load.image("building06", "/images/competitors/buildings/building06.png");
+    load.image("building07", "/images/competitors/buildings/building07.png");
+    load.image("building08", "/images/competitors/buildings/building08.png");
     console.debug("--- done");
   }
 
@@ -69,7 +71,8 @@ class Competitor extends Company {
 
     this.building = game.make.image(
       64, 78, this.gameplay.rnd.pick([
-        "building01", "building02", "building03", "building04", "building05", "building06"
+        "building01", "building02", "building03", "building04", "building05", "building06",
+        "building07", "building08"
       ])
     );
     this.building.anchor.setTo(0.5, 1);
