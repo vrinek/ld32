@@ -1,13 +1,18 @@
+enum CompetitorState {
+  Appearing, Alive, Disappearing, Dying
+}
+
 class Competitor extends Company {
   static lowScale = 0.4;
   static highScale = 1;
 
   private nextAttackTime: number;
-  private alive = true;
+  private state: CompetitorState;
 
   private background: Phaser.Image;
   private building: Phaser.Image;
   private attackBar: Phaser.Image;
+  private attackButton: Phaser.Button;
 
   private _onDestroy = new Phaser.Signal;
 
@@ -89,7 +94,7 @@ class Competitor extends Company {
 
     this.budgetDisplay = game.make.text(
       180, 40,
-      "XXX.XXX",
+      this.budgetString,
       { font: "18px bitOperatorPlus", fill: "black" }
     );
     this.budgetDisplay.anchor.set(1, 0);
@@ -97,7 +102,7 @@ class Competitor extends Company {
 
     this.growthDisplay = game.make.text(
       180, 90,
-      "+XX%",
+      this.growthString,
       { font: "14px bitOperatorPlus", fill: "black" }
     );
     this.growthDisplay.anchor.set(1, 1);
@@ -108,13 +113,47 @@ class Competitor extends Company {
     );
     this.group.add(this.growthIndicator);
 
-    var attackButton = new AttackButton(game.make, this.player, this);
-    attackButton.position.setTo(64, 100);
-    this.group.add(attackButton);
+    this.attackButton = game.make.button(0, 0, "attack_button", () => {
+      this.player.attack(this);
+    }, this, 1, 0, 2);
+    this.attackButton.anchor.setTo(0.5, 0.5);
+    this.attackButton.position.setTo(110, 125);
+    this.group.add(this.attackButton);
+
+    this.state = CompetitorState.Appearing;
 
     console.debug("--- done");
 
     return this.group;
+  }
+
+  appear(add: Phaser.GameObjectFactory) {
+    var targetPosition = new Phaser.Point(this.group.x, this.group.y);
+
+    // move off-screen to the right
+    this.group.position.setTo(400, targetPosition.y);
+
+    var slideIn = add.tween(this.group);
+    slideIn.to(
+      {x: targetPosition.x, y: targetPosition.y},
+      700,
+      Phaser.Easing.Bounce.Out
+    );
+
+    var popButton = add.tween(this.attackButton.scale);
+    this.attackButton.scale.setTo(0);
+    popButton.to(
+      {x: 1, y: 1},
+      500,
+      Phaser.Easing.Elastic.Out
+    )
+
+    slideIn.onComplete.add(() => {
+      popButton.start();
+      this.state = CompetitorState.Alive;
+    });
+
+    slideIn.start();
   }
 
   attack(otherCompany: Company) {
@@ -136,7 +175,7 @@ class Competitor extends Company {
   }
 
   update(time: Phaser.Time) {
-    if(!this.alive) return;
+    if(this.state != CompetitorState.Alive) return;
 
     Company.prototype.update.apply(this, [time]);
 
@@ -181,13 +220,13 @@ class Competitor extends Company {
 
   // Removes the competitor without awarding anything to the player.
   destroy() {
+    this.state = CompetitorState.Disappearing;
     this._onDestroy.dispatch();
-    this.alive = false;
     this.group.destroy();
   }
 
   render() {
-    if(!this.alive) return;
+    if(this.state != CompetitorState.Alive) return;
 
     this.budgetDisplay.text = this.budgetString;
     this.growthDisplay.text = this.growthString;
