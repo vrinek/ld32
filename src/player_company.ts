@@ -1,26 +1,38 @@
 class PlayerCompany extends Company {
-  private group: Phaser.Group;
-  private budgetDisplay: Phaser.Text;
-  private growthDisplay: Phaser.Text;
-  private growthIndicator: Phaser.Image;
+  static startingMoney = 10000; // 10k
 
-  constructor(rnd: Phaser.RandomDataGenerator) {
-    super(200, rnd);
+  protected bulletKey = "player_bullet";
+  protected bulletDuration = 1000; // 1 second
+
+  constructor(gameplay: Gameplay) {
+    super(gameplay, PlayerCompany.startingMoney);
   }
 
-  preload(load: Phaser.Loader) {
+  get hitTarget(): Phaser.Point {
+    return new Phaser.Point(this.group.x + 130, this.group.y + 250);
+  }
+
+  preload() {
+    var load = this.gameplay.load;
+
     load.image("building", "/images/player/building.png");
     load.image("large_growth_up", "/images/player/growth_up.png");
     load.image("large_growth_down", "/images/player/growth_down.png");
+    load.image("player_bullet", "/images/player/bullet.png");
   }
 
   create(game: Phaser.Game) {
     this.group = game.make.group();
 
-    this.group.add(game.make.image(0, 0, "building"));
+    this.group.add(game.make.image(80, 190, "building"));
+    this.group.add(game.make.text(
+      0, 0,
+      "Your Company",
+      { font: "24px Arial", fill: "#fff", align: "center" }
+    ));
 
     this.budgetDisplay = game.make.text(
-      180, 40,
+      260, 70,
       "XXX.XXX",
       { font: "24px Arial", fill: "#fff", align: "center" }
     );
@@ -28,7 +40,7 @@ class PlayerCompany extends Company {
     this.group.add(this.budgetDisplay);
 
     this.growthDisplay = game.make.text(
-      180, 70,
+      180, 370,
       "XX %",
       { font: "20px Arial", fill: "#fff", align: "center" }
     );
@@ -36,7 +48,7 @@ class PlayerCompany extends Company {
     this.group.add(this.growthDisplay);
 
     this.growthIndicator = game.make.image(
-      180, 70, "growth_up"
+      180, 370, "growth_up"
     );
     this.group.add(this.growthIndicator);
 

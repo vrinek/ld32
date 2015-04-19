@@ -1,14 +1,16 @@
 class Competitor extends Company {
-  static delayToAttack = 3000; // 3 seconds
   private nextAttackTime = 0;
+  private alive = true;
 
-  private group: Phaser.Group;
-  private budgetDisplay: Phaser.Text;
-  private growthDisplay: Phaser.Text;
-  private growthIndicator: Phaser.Image;
+  protected bulletKey = "silver_bullet";
+  protected bulletDuration = 1500; // 1.5 seconds
 
-  constructor (private player: PlayerCompany, rnd: Phaser.RandomDataGenerator) {
-    super(100, rnd);
+  constructor (gameplay: Gameplay, private player: PlayerCompany, private delayToAttack: number) {
+    super(gameplay, 1000);
+  }
+
+  get hitTarget(): Phaser.Point {
+    return new Phaser.Point(this.group.x + 50, this.group.y + 40);
   }
 
   preload(load: Phaser.Loader) {
@@ -18,6 +20,7 @@ class Competitor extends Company {
     load.image("budget_icon", "/images/competitors/budget_icon.png");
     load.image("small_growth_up", "/images/competitors/growth_up.png");
     load.image("small_growth_down", "/images/competitors/growth_down.png");
+    load.image("silver_bullet", "/images/competitors/bullet.png");
 
     load.image("building01", "/images/competitors/buildings/building01.png");
     load.image("building02", "/images/competitors/buildings/building02.png");
@@ -35,7 +38,7 @@ class Competitor extends Company {
     ));
 
     this.group.add(game.make.image(
-      10, 10, this.rnd.pick([
+      10, 10, this.gameplay.rnd.pick([
         "building01", "building02", "building03", "building04", "building05", "building06"
       ])
     ));
@@ -79,16 +82,34 @@ class Competitor extends Company {
   }
 
   update(time: Phaser.Time) {
+    if(!this.alive) return;
+
     this.adjustBudget(60);
 
     if(this.nextAttackTime < time.time) {
       console.debug("Attacking!!!");
       this.attack(this.player);
-      this.nextAttackTime = time.time + Competitor.delayToAttack;
+      this.nextAttackTime = time.time + this.delayToAttack;
+    }
+
+    if(Math.floor(this.budget) <= 0) {
+      this.die();
     }
   }
 
+  die() {
+    this.alive = false;
+
+    // award some growth to the player
+    var numOfCompetitors = 3;
+    this.player.growth -= this.growth/numOfCompetitors;
+
+    this.group.destroy();
+  }
+
   render() {
+    if(!this.alive) return;
+
     this.budgetDisplay.text = Math.floor(this.budget).toString();
     this.growthDisplay.text = Math.floor(this.growth*100*10)/10 + " %";
 

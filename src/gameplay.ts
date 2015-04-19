@@ -3,8 +3,14 @@ class Gameplay extends Phaser.State {
   public competitors: Array<Competitor>;
 
   init() {
-    this.player = new PlayerCompany(this.rnd);
-    this.competitors = [new Competitor(this.player, this.rnd)];
+    this.player = new PlayerCompany(this);
+    this.competitors = [
+      new Competitor(this, this.player, 2500),
+      new Competitor(this, this.player, 4000),
+      new Competitor(this, this.player, 3000),
+    ];
+
+    this.game.stage.backgroundColor = "#666";
   }
 
   preload() {
@@ -12,18 +18,18 @@ class Gameplay extends Phaser.State {
       var competitor = this.competitors[i];
       competitor.preload(this.game.load);
     }
-    this.player.preload(this.game.load);
+    this.player.preload();
   }
 
   create() {
     for (let i = 0; i < this.competitors.length; i++) {
       var competitor = this.competitors[i];
       var group = competitor.create(this.game);
-      group.position.setTo(500, 100);
+      group.position.setTo(500, 50 + i*180);
       this.world.add(group);
     }
     var group = this.player.create(this.game);
-    group.position.setTo(100, 100);
+    group.position.setTo(60, 30);
     this.world.add(group);
   }
 
