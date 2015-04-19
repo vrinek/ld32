@@ -34,6 +34,7 @@ class Competitor extends Company {
   }
 
   preload(load: Phaser.Loader) {
+    console.debug("preloading competitor assets");
     load.spritesheet("attack_button", "/images/competitors/attack_button.png", 93, 51);
 
     load.image("background", "/images/competitors/background.png");
@@ -48,9 +49,11 @@ class Competitor extends Company {
     load.image("building04", "/images/competitors/buildings/building04.png");
     load.image("building05", "/images/competitors/buildings/building05.png");
     load.image("building06", "/images/competitors/buildings/building06.png");
+    console.debug("--- done");
   }
 
   create(game: Phaser.Game) {
+    console.debug("creating competitor");
     this.group = game.make.group();
 
     this.background = game.make.image(
@@ -103,6 +106,8 @@ class Competitor extends Company {
     attackButton.position.setTo(64, 100);
     this.group.add(attackButton);
 
+    console.debug("--- done");
+
     return this.group;
   }
 
@@ -152,6 +157,7 @@ class Competitor extends Company {
   }
 
   die() {
+    console.debug("competitor is dying");
     this.alive = false;
 
     // award some growth to the player
@@ -159,6 +165,7 @@ class Competitor extends Company {
     this.player.growth -= this.growth/numOfCompetitors;
 
     this.group.destroy();
+    console.debug("--- done");
   }
 
   render() {
