@@ -96,10 +96,6 @@ class PlayerCompany extends Company {
     return this.group;
   }
 
-  update(time: Phaser.Time) {
-    this.adjustBudget(60);
-  }
-
   render() {
     this.budgetDisplay.text = this.budgetString;
     this.growthDisplay.text = this.growthString;

@@ -122,7 +122,7 @@ class Competitor extends Company {
   update(time: Phaser.Time) {
     if(!this.alive) return;
 
-    this.adjustBudget(60);
+    Company.prototype.update.apply(this, [time]);
 
     if(this.nextAttackTime < time.time) {
       console.debug("Attacking!!!");

@@ -18,6 +18,9 @@ class Company {
   protected shaking: Phaser.Tween;
   protected rumbleOffset: number;
 
+  private lastBudgetAdjustmentTime: number = 0;
+  private delayToBudgetAdjustment: number = 1000; // 1 second
+
   constructor(protected gameplay: Gameplay, public budget: number) {}
 
   get hitTarget(): Phaser.Point {
@@ -124,7 +127,14 @@ class Company {
     return this.budget >= Company.costPerAttack;
   }
 
-  adjustBudget(fps) {
-    this.budget *= (1 + this.growth/fps);
+  adjustBudget() {
+    this.budget *= (1 + this.growth);
+  }
+
+  update(time: Phaser.Time) {
+    if(this.lastBudgetAdjustmentTime < time.time) {
+      this.adjustBudget();
+      this.lastBudgetAdjustmentTime = time.time + this.delayToBudgetAdjustment;
+    }
   }
 }
