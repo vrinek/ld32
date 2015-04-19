@@ -48,14 +48,14 @@ var PlayerCompany = (function (_super) {
         }
     };
     PlayerCompany.preload = function (load) {
-        load.spritesheet("building", "/images/player/building.png", 144, 155);
-        load.image("large_growth_up", "/images/player/growth_up.png");
-        load.image("large_growth_down", "/images/player/growth_down.png");
-        load.image("player_bullet", "/images/player/bullet.png");
-        load.image("bmark_left", "/images/player/bmark_left.png");
-        load.image("bmark_mid", "/images/player/bmark_mid.png");
-        load.image("budget_cash", "/images/player/budget_cash.png");
-        load.image("budget_circle", "/images/player/budget_circle.png");
+        load.spritesheet("building", "images/player/building.png", 144, 155);
+        load.image("large_growth_up", "images/player/growth_up.png");
+        load.image("large_growth_down", "images/player/growth_down.png");
+        load.image("player_bullet", "images/player/bullet.png");
+        load.image("bmark_left", "images/player/bmark_left.png");
+        load.image("bmark_mid", "images/player/bmark_mid.png");
+        load.image("budget_cash", "images/player/budget_cash.png");
+        load.image("budget_circle", "images/player/budget_circle.png");
     };
     PlayerCompany.prototype.create = function (game) {
         this.group = game.make.group();
