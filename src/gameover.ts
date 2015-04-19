@@ -6,8 +6,8 @@ class Gameover extends Phaser.State {
   }
 
   preload() {
-    this.load.image("gameover_popup", "/images/interface/gameover_popup.png");
-    this.load.spritesheet("play_button", "/images/interface/play_button.png", 93, 51);
+    this.load.image("gameover_popup", "images/interface/gameover_popup.png");
+    this.load.spritesheet("play_button", "images/interface/play_button.png", 93, 51);
   }
 
   create() {

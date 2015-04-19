@@ -43,7 +43,7 @@ class Gameplay extends Phaser.State {
     Competitor.preload(this.load);
     PlayerCompany.preload(this.load);
 
-    this.load.spritesheet("timer", "/images/competitors/timer_next.png", 72, 73);
+    this.load.spritesheet("timer", "images/competitors/timer_next.png", 72, 73);
   }
 
   create() {
