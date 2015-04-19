@@ -8,6 +8,8 @@ class Competitor extends Company {
   private background: Phaser.Image;
   private building: Phaser.Image;
 
+  private _onDeath = new Phaser.Signal;
+
   protected rumbleOffset = -10;
 
   protected bulletKey = "silver_bullet";
@@ -156,8 +158,13 @@ class Competitor extends Company {
     this.building.scale.setTo(newScale);
   }
 
+  get onDeath() {
+    return this._onDeath;
+  }
+
   die() {
     console.debug("competitor is dying");
+    this._onDeath.dispatch();
     this.alive = false;
 
     // award some growth to the player
