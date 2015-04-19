@@ -9,7 +9,7 @@ class Company {
 
   growth: number = 0.02;
 
-  protected group: Phaser.Group;
+  group: Phaser.Group;
   protected budgetDisplay: Phaser.Text;
   protected growthDisplay: Phaser.Text;
   protected growthIndicator: Phaser.Image;
