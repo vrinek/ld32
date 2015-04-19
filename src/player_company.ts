@@ -12,7 +12,7 @@ class PlayerCompany extends Company {
   }
 
   get hitTarget(): Phaser.Point {
-    return new Phaser.Point(this.group.x + 130, this.group.y + 250);
+    return new Phaser.Point(this.group.x + 210, this.group.y + 340);
   }
 
   attack(otherCompany: Company) {
@@ -67,18 +67,26 @@ class PlayerCompany extends Company {
     this.budgetDisplay = game.make.text(
       277, 94,
       "XXX.XXX",
-      { font: "28px bitOperatorPlus", fill: "#000", align: "center" }
+      { font: "28px bitOperatorPlus", fill: "#000" }
     );
     this.budgetDisplay.anchor.set(1, 1);
     this.group.add(this.budgetDisplay);
 
     this.growthDisplay = game.make.text(
-      275, 460,
+      275, 470,
       "XX %",
-      { font: "20px bitOperatorPlus", fill: "#fff", align: "center" }
+      { font: "24px bitOperatorPlus", fill: "#fff" }
     );
     this.growthDisplay.anchor.set(1, 1);
     this.group.add(this.growthDisplay);
+
+    var growthLabel = game.make.text(
+      200, 467,
+      "GROWTH:",
+      { font: "16px bitOperatorPlus", fill: "#fff" }
+    );
+    growthLabel.anchor.set(1, 1);
+    this.group.add(growthLabel);
 
     this.growthIndicator = game.make.image(
       290, 430, "large_growth_up"
@@ -93,10 +101,8 @@ class PlayerCompany extends Company {
   }
 
   render() {
-    var budgetText = Math.floor(this.budget).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-    this.budgetDisplay.text = "$" + budgetText;
-    this.growthDisplay.text = Math.floor(this.growth*100*10)/10 + " %";
+    this.budgetDisplay.text = this.budgetString;
+    this.growthDisplay.text = this.growthString;
 
     if(this.growth > 0) {
       this.growthIndicator.loadTexture("large_growth_up", 0);

@@ -24,13 +24,14 @@ class Gameplay extends Phaser.State {
   create() {
     for (let i = 0; i < this.competitors.length; i++) {
       var competitor = this.competitors[i];
-      var group = competitor.create(this.game);
-      group.position.setTo(500, 50 + i*180);
-      this.world.add(group);
+      var competitorGroup = competitor.create(this.game);
+      competitorGroup.position.setTo(600, 100 + i*160);
+      this.world.add(competitorGroup);
     }
-    var group = this.player.create(this.game);
-    group.position.setTo(0, 0);
-    this.world.add(group);
+
+    var playerCompanyGroup = this.player.create(this.game);
+    playerCompanyGroup.position.setTo(0, 0);
+    this.world.add(playerCompanyGroup);
   }
 
   update() {

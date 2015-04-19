@@ -54,41 +54,43 @@ class Competitor extends Company {
     this.group.add(this.background);
 
     this.building = game.make.image(
-      52, 72, this.gameplay.rnd.pick([
+      64, 80, this.gameplay.rnd.pick([
         "building01", "building02", "building03", "building04", "building05", "building06"
       ])
     );
     this.building.anchor.setTo(0.5, 1);
     this.group.add(this.building);
 
+    var nameLabel = game.make.text(
+      160, 45,
+      "Name",
+      { font: "18px bitOperatorPlus", fill: "white" }
+    );
+    nameLabel.anchor.set(0.5, 1);
+    this.group.add(nameLabel);
+
     this.group.add(game.make.image(
       185, 45, "budget_icon"
-    ));
-
-    this.group.add(game.make.text(
-      100, 10,
-      "Name",
-      { font: "24px bitOperatorPlus", fill: "#fff", align: "center" }
     ));
 
     this.budgetDisplay = game.make.text(
       180, 40,
       "XXX.XXX",
-      { font: "24px bitOperatorPlus", fill: "#fff", align: "center" }
+      { font: "18px bitOperatorPlus", fill: "black" }
     );
     this.budgetDisplay.anchor.set(1, 0);
     this.group.add(this.budgetDisplay);
 
     this.growthDisplay = game.make.text(
-      180, 70,
-      "XX %",
-      { font: "20px bitOperatorPlus", fill: "#fff", align: "center" }
+      180, 90,
+      "+XX%",
+      { font: "14px bitOperatorPlus", fill: "black" }
     );
-    this.growthDisplay.anchor.set(1, 0);
+    this.growthDisplay.anchor.set(1, 1);
     this.group.add(this.growthDisplay);
 
     this.growthIndicator = game.make.image(
-      180, 70, "small_growth_up"
+      185, 65, "small_growth_up"
     );
     this.group.add(this.growthIndicator);
 
@@ -157,8 +159,8 @@ class Competitor extends Company {
   render() {
     if(!this.alive) return;
 
-    this.budgetDisplay.text = Math.floor(this.budget).toString();
-    this.growthDisplay.text = Math.floor(this.growth*100*10)/10 + " %";
+    this.budgetDisplay.text = this.budgetString;
+    this.growthDisplay.text = this.growthString;
 
     if(this.growth > 0) {
       this.growthIndicator.loadTexture("small_growth_up", 0);

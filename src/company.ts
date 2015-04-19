@@ -24,6 +24,19 @@ class Company {
     return new Phaser.Point(this.group.x + 50, this.group.y + 40);
   }
 
+  get budgetString(): string {
+    return "$"+ Math.floor(this.budget).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  get growthString(): string {
+    var value = Math.floor(this.growth*100);
+    var sign = ""; // negative values already have a sign
+    if(value > 0) {
+      sign = "+";
+    }
+    return sign + value +"%";
+  }
+
   attack(otherCompany: Company) {
     if(!this.canAttack()) return;
 
