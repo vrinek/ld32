@@ -23,7 +23,8 @@ class Competitor extends Company {
   }
 
   get hitTarget(): Phaser.Point {
-    return new Phaser.Point(this.group.x + 50, this.group.y + 40);
+    var point = this.building.toGlobal(this.gameplay.world.position);
+    return new Phaser.Point(point.x, point.y-20);
   }
 
   takeDamage(damage) {
