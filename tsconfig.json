@@ -14,7 +14,6 @@
     ],
     "files": [
         "./src/app.ts",
-        "./src/attack_button.ts",
         "./src/company.ts",
         "./src/competitor.ts",
         "./src/competitor_slot.ts",

@@ -140,6 +140,7 @@ class Gameplay extends Phaser.State {
 
     competitor.create(this.game);
     slot.competitor = competitor;
+    competitor.appear(this.add);
     this.state = GameplayState.Idle;
     this.nextCompetitorEnter = this.time.time + this.delayToNextCompetitor;
 
