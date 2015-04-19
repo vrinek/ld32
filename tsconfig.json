@@ -19,6 +19,7 @@
         "./src/competitor.ts",
         "./src/competitor_slot.ts",
         "./src/game.ts",
+        "./src/gameover.ts",
         "./src/gameplay.ts",
         "./src/player_company.ts",
         "./lib/p2.d.ts",

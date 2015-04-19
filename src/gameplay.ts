@@ -4,20 +4,36 @@ enum GameplayState {
 
 class Gameplay extends Phaser.State {
   public player: PlayerCompany;
-  public competitors: Array<Competitor> = [];
+  public competitors: Array<Competitor>;
 
-  private competitorSlots: Array<CompetitorSlot> = [null, null, null];
-  private nextCompetitorData = {
-    bulletDelay: 3000,
-    startingBudget: 500
+  private competitorSlots: Array<CompetitorSlot>;
+  private nextCompetitorData: {
+    bulletDelay: number,
+    startingBudget: number,
   };
 
-  private state = GameplayState.Idle;
-  private delayToNextCompetitor = 10000; // 10 seconds
-  private lastCompetitorEnter = 0;
-  private nextSlotIndex = 0;
+  private state: GameplayState;
+  private delayToNextCompetitor: number;
+  private lastCompetitorEnter: number;
+  private nextSlotIndex: number;
+
+  private hiscore: number;
 
   init() {
+    this.competitors = []
+    this.competitorSlots = [null, null, null];
+    this.nextCompetitorData = {
+      bulletDelay: 3000,
+      startingBudget: 100,
+    };
+
+    this.state = GameplayState.Idle;
+    this.delayToNextCompetitor = 10000; // 10 seconds
+    this.lastCompetitorEnter = this.game.time.time;
+    this.nextSlotIndex = 0;
+
+    this.hiscore = 0;
+
     this.player = new PlayerCompany(this);
   }
 
@@ -46,8 +62,15 @@ class Gameplay extends Phaser.State {
   }
 
   update() {
+    if(this.player.budget <= 0) {
+      this.game.state.start("gameover", true, false, this.hiscore);
+    }
+
     this.updateCompetitors();
     this.player.update(this.time);
+
+    if(this.player.budget > this.hiscore)
+      this.hiscore = this.player.budget;
 
     this.maybeIntroduceNewCompetitors();
   }
