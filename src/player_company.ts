@@ -15,6 +15,21 @@ class PlayerCompany extends Company {
     return new Phaser.Point(this.group.x + 130, this.group.y + 250);
   }
 
+  attack(otherCompany: Company) {
+    var newBullet: Phaser.Sprite = Company.prototype.attack.apply(this, [otherCompany]);
+
+    if(!newBullet) { return; }
+
+    var rnd = this.gameplay.rnd;
+    newBullet.rotation = rnd.realInRange(0,3);
+    var rotating = this.gameplay.make.tween(newBullet);
+    rotating.to({rotation: rnd.realInRange(10,20)}, this.bulletDuration);
+
+    rotating.start();
+
+    return newBullet;
+  }
+
   takeDamage(damage) {
     Company.prototype.takeDamage.apply(this, [damage]);
 

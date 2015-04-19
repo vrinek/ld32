@@ -12,7 +12,7 @@ class Competitor extends Company {
   protected rumbleOffset = -10;
 
   protected bulletKey = "silver_bullet";
-  protected bulletDuration = 1500; // 1.5 seconds
+  protected bulletDuration = 2500; // 2.5 seconds
 
   constructor (gameplay: Gameplay, private player: PlayerCompany, private delayToAttack: number) {
     super(gameplay, Competitor.startingBudget);
@@ -35,7 +35,7 @@ class Competitor extends Company {
     load.image("budget_icon", "/images/competitors/budget_icon.png");
     load.image("small_growth_up", "/images/competitors/growth_up.png");
     load.image("small_growth_down", "/images/competitors/growth_down.png");
-    load.image("silver_bullet", "/images/competitors/bullet.png");
+    load.spritesheet("silver_bullet", "/images/competitors/bullet.png", 25, 25, 7);
 
     load.image("building01", "/images/competitors/buildings/building01.png");
     load.image("building02", "/images/competitors/buildings/building02.png");
@@ -100,9 +100,12 @@ class Competitor extends Company {
   }
 
   attack(otherCompany: Company) {
-    var newBullet: Phaser.Image = Company.prototype.attack.apply(this, [otherCompany]);
+    var newBullet: Phaser.Sprite = Company.prototype.attack.apply(this, [otherCompany]);
 
     if(!newBullet) { return; }
+
+    newBullet.animations.add("spining");
+    newBullet.animations.play("spining", 20, true);
 
     newBullet.inputEnabled = true;
     newBullet.events.onInputDown.add(() => {

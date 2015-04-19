@@ -45,14 +45,13 @@ class Company {
     rnd: Phaser.RandomDataGenerator,
     hitTarget: Phaser.Point,
     onComplete: () => void
-  ): Phaser.Image {
-    var bullet = this.gameplay.make.image(
+  ): Phaser.Sprite {
+    var bullet = this.gameplay.make.sprite(
       this.hitTarget.x + rnd.realInRange(-20,20),
       this.hitTarget.y + rnd.realInRange(-20,20),
       this.bulletKey
     );
     bullet.anchor.setTo(0.5, 0.5);
-    bullet.rotation = rnd.realInRange(0,3);
 
     var movingX = this.gameplay.make.tween(bullet);
     movingX.to(
@@ -68,9 +67,6 @@ class Company {
       Phaser.Easing.Cubic.Out
     );
 
-    var rotating = this.gameplay.make.tween(bullet);
-    rotating.to({rotation: rnd.realInRange(10,20)}, this.bulletDuration);
-
     var growing = this.gameplay.make.tween(bullet.scale);
     growing.from(
       {x: 0.2, y: 0.2},
@@ -80,7 +76,6 @@ class Company {
 
     movingX.start();
     movingY.start();
-    rotating.start();
     growing.start();
 
     return bullet;
