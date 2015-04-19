@@ -37,13 +37,15 @@ class Company {
 
     this.budget -= Company.costPerAttack;
     this.gameplay.world.add(newBullet);
+
+    return newBullet;
   }
 
   private instantiateBullet(
     rnd: Phaser.RandomDataGenerator,
     hitTarget: Phaser.Point,
     onComplete: () => void
-  ) {
+  ): Phaser.Image {
     var bullet = this.gameplay.make.image(
       this.hitTarget.x + rnd.realInRange(-20,20),
       this.hitTarget.y + rnd.realInRange(-20,20),

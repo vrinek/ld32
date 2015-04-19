@@ -99,6 +99,21 @@ class Competitor extends Company {
     return this.group;
   }
 
+  attack(otherCompany: Company) {
+    var newBullet: Phaser.Image = Company.prototype.attack.apply(this, [otherCompany]);
+
+    if(!newBullet) { return; }
+
+    newBullet.inputEnabled = true;
+    newBullet.events.onInputDown.add(() => {
+      this.gameplay.tweens.removeFrom(newBullet);
+      newBullet.destroy();
+      this.player.budget += 100;
+    });
+
+    return newBullet;
+  }
+
   update(time: Phaser.Time) {
     if(!this.alive) return;
 
