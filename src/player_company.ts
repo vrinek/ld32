@@ -4,12 +4,21 @@ class PlayerCompany extends Company {
   protected bulletKey = "player_bullet";
   protected bulletDuration = 1000; // 1 second
 
+  protected rumbleOffset = 10;
+  private building: Phaser.Image;
+
   constructor(gameplay: Gameplay) {
     super(gameplay, PlayerCompany.startingMoney);
   }
 
   get hitTarget(): Phaser.Point {
     return new Phaser.Point(this.group.x + 130, this.group.y + 250);
+  }
+
+  takeDamage(damage) {
+    Company.prototype.takeDamage.apply(this, [damage]);
+
+    this.shakingEffect(this.building);
   }
 
   preload() {
@@ -24,7 +33,9 @@ class PlayerCompany extends Company {
   create(game: Phaser.Game) {
     this.group = game.make.group();
 
-    this.group.add(game.make.image(80, 190, "building"));
+    this.building = game.make.image(80, 190, "building");
+    this.group.add(this.building);
+
     this.group.add(game.make.text(
       0, 0,
       "Your Company",

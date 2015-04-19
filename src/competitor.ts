@@ -2,6 +2,11 @@ class Competitor extends Company {
   private nextAttackTime = 0;
   private alive = true;
 
+  private background: Phaser.Image;
+  private building: Phaser.Image;
+
+  protected rumbleOffset = -10;
+
   protected bulletKey = "silver_bullet";
   protected bulletDuration = 1500; // 1.5 seconds
 
@@ -11,6 +16,12 @@ class Competitor extends Company {
 
   get hitTarget(): Phaser.Point {
     return new Phaser.Point(this.group.x + 50, this.group.y + 40);
+  }
+
+  takeDamage(damage) {
+    Company.prototype.takeDamage.apply(this, [damage]);
+
+    this.shakingEffect(this.building);
   }
 
   preload(load: Phaser.Loader) {
@@ -33,15 +44,17 @@ class Competitor extends Company {
   create(game: Phaser.Game) {
     this.group = game.make.group();
 
-    this.group.add(game.make.image(
+    this.background = game.make.image(
       0, 0, "background"
-    ));
+    );
+    this.group.add(this.background);
 
-    this.group.add(game.make.image(
+    this.building = game.make.image(
       10, 10, this.gameplay.rnd.pick([
         "building01", "building02", "building03", "building04", "building05", "building06"
       ])
-    ));
+    );
+    this.group.add(this.building);
 
     this.group.add(game.make.image(
       185, 45, "budget_icon"

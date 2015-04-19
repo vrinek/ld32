@@ -14,6 +14,10 @@ class Company {
   protected growthDisplay: Phaser.Text;
   protected growthIndicator: Phaser.Image;
 
+  protected preShakePosition: Phaser.Point;
+  protected shaking: Phaser.Tween;
+  protected rumbleOffset: number;
+
   constructor(protected gameplay: Gameplay, public budget: number) {}
 
   get hitTarget(): Phaser.Point {
@@ -78,6 +82,27 @@ class Company {
     growing.start();
 
     return bullet;
+  }
+
+  protected shakingEffect(targetObject: Phaser.Image) {
+    if(this.shaking && this.shaking.isRunning) {
+      this.shaking.stop();
+      targetObject.position.setTo(this.preShakePosition.x, this.preShakePosition.y);
+    } else {
+      this.preShakePosition = new Phaser.Point(targetObject.position.x, targetObject.position.y);
+    }
+
+    var properties = { x: targetObject.x - this.rumbleOffset };
+    var duration = 70;
+    var ease = Phaser.Easing.Bounce.InOut;
+    var autoStart = false; // default
+    var delay = 0; // default
+    var repeat = 2;
+    var yoyo = true;
+
+    this.shaking = this.gameplay.add.tween(targetObject)
+      .to(properties, duration, ease, autoStart, delay, repeat, yoyo)
+      .start();
   }
 
   takeDamage(damage) {
