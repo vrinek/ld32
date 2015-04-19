@@ -2,7 +2,7 @@ class Competitor extends Company {
   static lowScale = 0.4;
   static highScale = 1;
 
-  private nextAttackTime = 0;
+  private nextAttackTime: number;
   private alive = true;
 
   private background: Phaser.Image;
@@ -23,6 +23,7 @@ class Competitor extends Company {
     private startingBudget: number
   ) {
     super(gameplay, startingBudget);
+    this.nextAttackTime = gameplay.game.time.time + this.delayToAttack;
   }
 
   get hitTarget(): Phaser.Point {
