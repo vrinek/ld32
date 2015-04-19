@@ -54,13 +54,13 @@ class PlayerCompany extends Company {
     this.group.add(game.make.text(
       0, 0,
       "Your Company",
-      { font: "24px Arial", fill: "#fff", align: "center" }
+      { font: "24px bitOperatorPlus", fill: "#fff", align: "center" }
     ));
 
     this.budgetDisplay = game.make.text(
       260, 70,
       "XXX.XXX",
-      { font: "24px Arial", fill: "#fff", align: "center" }
+      { font: "24px bitOperatorPlus", fill: "#fff", align: "center" }
     );
     this.budgetDisplay.anchor.set(1, 0);
     this.group.add(this.budgetDisplay);
@@ -68,7 +68,7 @@ class PlayerCompany extends Company {
     this.growthDisplay = game.make.text(
       180, 370,
       "XX %",
-      { font: "20px Arial", fill: "#fff", align: "center" }
+      { font: "20px bitOperatorPlus", fill: "#fff", align: "center" }
     );
     this.growthDisplay.anchor.set(1, 0);
     this.group.add(this.growthDisplay);
