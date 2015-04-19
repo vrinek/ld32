@@ -1,5 +1,6 @@
 class Company {
   static costPerAttack = 10;
+  static budgetDamagePerAttack = 10;
   static minDamage = 0.001;
   static maxDamage = 0.01;
 
@@ -81,7 +82,7 @@ class Company {
 
   takeDamage(damage) {
     this.growth -= damage;
-    this.budget -= Company.costPerAttack;
+    this.budget -= Company.budgetDamagePerAttack;
   }
 
   canAttack() {
