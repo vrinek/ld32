@@ -1,8 +1,8 @@
 @font-face {
   font-family: 'bitOperatorPlus';
-  src: url('/webfonts/bitOperatorPlus.eot?#iefix') format('embedded-opentype'),
-       url('/webfonts/bitOperatorPlus.woff') format('woff'),
-       url('/webfonts/bitOperatorPlus.ttf') format('truetype');
+  src: url('webfonts/bitOperatorPlus.eot?#iefix') format('embedded-opentype'),
+       url('webfonts/bitOperatorPlus.woff') format('woff'),
+       url('webfonts/bitOperatorPlus.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }

@@ -38,22 +38,22 @@ var Competitor = (function (_super) {
     };
     Competitor.preload = function (load) {
         console.debug("preloading competitor assets");
-        load.spritesheet("attack_button", "/images/competitors/attack_button.png", 93, 51);
-        load.image("background", "/images/competitors/background.png");
-        load.image("budget_icon", "/images/competitors/budget_icon.png");
-        load.image("small_growth_up", "/images/competitors/growth_up.png");
-        load.image("small_growth_down", "/images/competitors/growth_down.png");
-        load.image("attack_bar", "/images/competitors/attack_bar.png");
-        load.image("attack_bar_back", "/images/competitors/attack_bar_back.png");
-        load.spritesheet("silver_bullet", "/images/competitors/bullet.png", 25, 25, 7);
-        load.image("building01", "/images/competitors/buildings/building01.png");
-        load.image("building02", "/images/competitors/buildings/building02.png");
-        load.image("building03", "/images/competitors/buildings/building03.png");
-        load.image("building04", "/images/competitors/buildings/building04.png");
-        load.image("building05", "/images/competitors/buildings/building05.png");
-        load.image("building06", "/images/competitors/buildings/building06.png");
-        load.image("building07", "/images/competitors/buildings/building07.png");
-        load.image("building08", "/images/competitors/buildings/building08.png");
+        load.spritesheet("attack_button", "images/competitors/attack_button.png", 93, 51);
+        load.image("background", "images/competitors/background.png");
+        load.image("budget_icon", "images/competitors/budget_icon.png");
+        load.image("small_growth_up", "images/competitors/growth_up.png");
+        load.image("small_growth_down", "images/competitors/growth_down.png");
+        load.image("attack_bar", "images/competitors/attack_bar.png");
+        load.image("attack_bar_back", "images/competitors/attack_bar_back.png");
+        load.spritesheet("silver_bullet", "images/competitors/bullet.png", 25, 25, 7);
+        load.image("building01", "images/competitors/buildings/building01.png");
+        load.image("building02", "images/competitors/buildings/building02.png");
+        load.image("building03", "images/competitors/buildings/building03.png");
+        load.image("building04", "images/competitors/buildings/building04.png");
+        load.image("building05", "images/competitors/buildings/building05.png");
+        load.image("building06", "images/competitors/buildings/building06.png");
+        load.image("building07", "images/competitors/buildings/building07.png");
+        load.image("building08", "images/competitors/buildings/building08.png");
         console.debug("--- done");
     };
     Competitor.prototype.create = function (game) {

@@ -31,7 +31,7 @@ var Gameplay = (function (_super) {
     Gameplay.prototype.preload = function () {
         Competitor.preload(this.load);
         PlayerCompany.preload(this.load);
-        this.load.spritesheet("timer", "/images/competitors/timer_next.png", 72, 73);
+        this.load.spritesheet("timer", "images/competitors/timer_next.png", 72, 73);
     };
     Gameplay.prototype.create = function () {
         this.game.stage.backgroundColor = "#666";
