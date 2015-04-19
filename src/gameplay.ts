@@ -29,7 +29,7 @@ class Gameplay extends Phaser.State {
       this.world.add(group);
     }
     var group = this.player.create(this.game);
-    group.position.setTo(60, 30);
+    group.position.setTo(0, 0);
     this.world.add(group);
   }
 

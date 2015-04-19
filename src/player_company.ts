@@ -43,38 +43,45 @@ class PlayerCompany extends Company {
     load.image("large_growth_up", "/images/player/growth_up.png");
     load.image("large_growth_down", "/images/player/growth_down.png");
     load.image("player_bullet", "/images/player/bullet.png");
+
+    load.image("bmark_left", "/images/player/bmark_left.png");
+    load.image("bmark_mid", "/images/player/bmark_mid.png");
+    load.image("budget_cash", "/images/player/budget_cash.png");
+    load.image("budget_circle", "/images/player/budget_circle.png");
   }
 
   create(game: Phaser.Game) {
     this.group = game.make.group();
 
-    this.building = game.make.image(80, 190, "building");
+    this.building = game.make.image(136, 245, "building");
     this.group.add(this.building);
 
-    this.group.add(game.make.text(
-      0, 0,
-      "Your Company",
-      { font: "24px bitOperatorPlus", fill: "#fff", align: "center" }
-    ));
+    var bmarkMid = game.make.image(48, 25, "bmark_mid");
+    bmarkMid.scale.setTo(5, 1);
+    this.group.add(bmarkMid);
+
+    this.group.add(game.make.image(25, 25, "bmark_left"));
+    this.group.add(game.make.image(290, 15, "budget_circle"));
+    this.group.add(game.make.image(305, 50, "budget_cash"));
 
     this.budgetDisplay = game.make.text(
-      260, 70,
+      277, 94,
       "XXX.XXX",
-      { font: "24px bitOperatorPlus", fill: "#fff", align: "center" }
+      { font: "28px bitOperatorPlus", fill: "#000", align: "center" }
     );
-    this.budgetDisplay.anchor.set(1, 0);
+    this.budgetDisplay.anchor.set(1, 1);
     this.group.add(this.budgetDisplay);
 
     this.growthDisplay = game.make.text(
-      180, 370,
+      275, 460,
       "XX %",
       { font: "20px bitOperatorPlus", fill: "#fff", align: "center" }
     );
-    this.growthDisplay.anchor.set(1, 0);
+    this.growthDisplay.anchor.set(1, 1);
     this.group.add(this.growthDisplay);
 
     this.growthIndicator = game.make.image(
-      180, 370, "large_growth_up"
+      290, 430, "large_growth_up"
     );
     this.group.add(this.growthIndicator);
 
@@ -86,7 +93,9 @@ class PlayerCompany extends Company {
   }
 
   render() {
-    this.budgetDisplay.text = Math.floor(this.budget).toString();
+    var budgetText = Math.floor(this.budget).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+    this.budgetDisplay.text = "$" + budgetText;
     this.growthDisplay.text = Math.floor(this.growth*100*10)/10 + " %";
 
     if(this.growth > 0) {
