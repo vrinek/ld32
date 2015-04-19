@@ -8,19 +8,24 @@ class Gameplay extends Phaser.State {
 
   private competitorSlots: Array<CompetitorSlot> = [null, null, null];
   private competitorData = [
-    {bulletDelay: 2500, startingBudget: 1000},
-    {bulletDelay: 4000, startingBudget: 2000},
-    {bulletDelay: 3000, startingBudget: 5000},
-  ]
+    {bulletDelay: 3500, startingBudget:  800},
+    {bulletDelay: 3000, startingBudget: 2000},
+    {bulletDelay: 2500, startingBudget: 5000},
+    {bulletDelay: 1000, startingBudget: 9000},
+  ];
 
   private state = GameplayState.Idle;
+  private delayToNextCompetitor = 10000; // 10 seconds
+  private lastCompetitorEnter = 0;
+  private nextSlotIndex = 0;
 
   init() {
     this.player = new PlayerCompany(this);
   }
 
   preload() {
-    this.player.preload();
+    Competitor.preload(this.load);
+    PlayerCompany.preload(this.load);
   }
 
   create() {
@@ -71,7 +76,18 @@ class Gameplay extends Phaser.State {
     }
 
     if(emptySlots.length == this.competitorSlots.length) {
-      this.introduceNewCompetitor(emptySlots[0]);
+      this.introduceNewCompetitor(this.competitorSlots[this.nextSlotIndex]);
+      this.nextSlotIndex++;
+      if(this.nextSlotIndex >= this.competitorSlots.length)
+        this.nextSlotIndex = 0;
+    } else if(this.time.time >= this.delayToNextCompetitor + this.lastCompetitorEnter) {
+      var slot = this.competitorSlots[this.nextSlotIndex];
+      if(slot.competitor)
+        slot.competitor.destroy();
+      this.introduceNewCompetitor(slot);
+      this.nextSlotIndex++;
+      if(this.nextSlotIndex >= this.competitorSlots.length)
+        this.nextSlotIndex = 0;
     }
   }
 
@@ -81,13 +97,10 @@ class Gameplay extends Phaser.State {
     var data = this.competitorData.shift();
     var competitor = new Competitor(this, this.player, data.bulletDelay, data.startingBudget);
 
-    competitor.preload(this.load);
-    this.load.onLoadComplete.addOnce(() => {
-      competitor.create(this.game);
-      slot.competitor = competitor;
-      this.state = GameplayState.Idle;
-    })
-    this.load.start();
+    competitor.create(this.game);
+    slot.competitor = competitor;
+    this.state = GameplayState.Idle;
+    this.lastCompetitorEnter = this.time.time;
 
     console.debug("--- done");
   }

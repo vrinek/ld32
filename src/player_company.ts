@@ -36,9 +36,7 @@ class PlayerCompany extends Company {
     this.shakingEffect(this.building);
   }
 
-  preload() {
-    var load = this.gameplay.load;
-
+  static preload(load: Phaser.Loader) {
     load.spritesheet("building", "/images/player/building.png", 144, 155);
     load.image("large_growth_up", "/images/player/growth_up.png");
     load.image("large_growth_down", "/images/player/growth_down.png");

@@ -18,7 +18,7 @@ class CompetitorSlot extends Phaser.Group {
     this.add(newCompetitor.group);
     this._competitor = newCompetitor;
 
-    this.competitorOnDeath = this._competitor.onDeath.addOnce(() => {
+    this.competitorOnDeath = this._competitor.onDestroy.addOnce(() => {
       console.debug("removing dead competitor from slot");
       this.removeChild(this._competitor.group);
       this._competitor = null;

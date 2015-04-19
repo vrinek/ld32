@@ -8,7 +8,7 @@ class Competitor extends Company {
   private background: Phaser.Image;
   private building: Phaser.Image;
 
-  private _onDeath = new Phaser.Signal;
+  private _onDestroy = new Phaser.Signal;
 
   protected rumbleOffset = -10;
 
@@ -35,7 +35,7 @@ class Competitor extends Company {
     this.shakingEffect(this.building);
   }
 
-  preload(load: Phaser.Loader) {
+  static preload(load: Phaser.Loader) {
     console.debug("preloading competitor assets");
     load.spritesheet("attack_button", "/images/competitors/attack_button.png", 93, 51);
 
@@ -158,21 +158,27 @@ class Competitor extends Company {
     this.building.scale.setTo(newScale);
   }
 
-  get onDeath() {
-    return this._onDeath;
+  get onDestroy() {
+    return this._onDestroy;
   }
 
+  // Kills the competitor and awards growth to the player.
   die() {
     console.debug("competitor is dying");
-    this._onDeath.dispatch();
-    this.alive = false;
+    this.destroy();
 
     // award some growth to the player
     var numOfCompetitors = 3;
     this.player.growth -= this.growth/numOfCompetitors;
 
-    this.group.destroy();
     console.debug("--- done");
+  }
+
+  // Removes the competitor without awarding anything to the player.
+  destroy() {
+    this._onDestroy.dispatch();
+    this.alive = false;
+    this.group.destroy();
   }
 
   render() {
