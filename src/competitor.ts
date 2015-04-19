@@ -7,6 +7,7 @@ class Competitor extends Company {
 
   private background: Phaser.Image;
   private building: Phaser.Image;
+  private attackBar: Phaser.Image;
 
   private _onDestroy = new Phaser.Signal;
 
@@ -43,6 +44,8 @@ class Competitor extends Company {
     load.image("budget_icon", "/images/competitors/budget_icon.png");
     load.image("small_growth_up", "/images/competitors/growth_up.png");
     load.image("small_growth_down", "/images/competitors/growth_down.png");
+    load.image("attack_bar", "/images/competitors/attack_bar.png");
+    load.image("attack_bar_back", "/images/competitors/attack_bar_back.png");
     load.spritesheet("silver_bullet", "/images/competitors/bullet.png", 25, 25, 7);
 
     load.image("building01", "/images/competitors/buildings/building01.png");
@@ -64,20 +67,17 @@ class Competitor extends Company {
     this.group.add(this.background);
 
     this.building = game.make.image(
-      64, 80, this.gameplay.rnd.pick([
+      64, 78, this.gameplay.rnd.pick([
         "building01", "building02", "building03", "building04", "building05", "building06"
       ])
     );
     this.building.anchor.setTo(0.5, 1);
     this.group.add(this.building);
 
-    var nameLabel = game.make.text(
-      160, 45,
-      "Name",
-      { font: "18px bitOperatorPlus", fill: "white" }
-    );
-    nameLabel.anchor.set(0.5, 1);
-    this.group.add(nameLabel);
+    this.group.add(game.make.image(120, 20, "attack_bar_back"));
+    this.attackBar = game.make.image(120, 20, "attack_bar");
+    this.attackBar.scale.setTo(0, 1);
+    this.group.add(this.attackBar);
 
     this.group.add(game.make.image(
       185, 45, "budget_icon"
@@ -141,6 +141,11 @@ class Competitor extends Company {
       this.attack(this.player);
       this.nextAttackTime = time.time + this.delayToAttack;
     }
+
+    this.attackBar.scale.setTo(
+      1 - (this.nextAttackTime - time.time)/this.delayToAttack,
+      this.attackBar.scale.y
+    );
 
     this.scaleByBudget();
 
