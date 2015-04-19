@@ -29,4 +29,16 @@ class CompetitorSlot extends Phaser.Group {
   get competitor() {
     return this._competitor;
   }
+
+  createSlotTimer(add: Phaser.GameObjectFactory, onCompleteCallback: () => void) {
+    var timer = add.sprite(860, this.y + 70, "timer");
+    timer.scale.setTo(0.5);
+    timer.anchor.setTo(0.5);
+
+    timer.animations.add("countdown");
+    timer.animations.play("countdown", 1, false);
+    timer.animations.currentAnim.onComplete.add(onCompleteCallback);
+
+    return timer;
+  }
 }

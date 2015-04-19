@@ -14,10 +14,12 @@ class Gameplay extends Phaser.State {
 
   private state: GameplayState;
   private delayToNextCompetitor: number;
-  private lastCompetitorEnter: number;
+  private nextCompetitorEnter: number;
   private nextSlotIndex: number;
 
   private hiscore: number;
+
+  private currentTimer: Phaser.Sprite;
 
   init() {
     this.competitors = []
@@ -29,7 +31,7 @@ class Gameplay extends Phaser.State {
 
     this.state = GameplayState.Idle;
     this.delayToNextCompetitor = 10000; // 10 seconds
-    this.lastCompetitorEnter = this.game.time.time;
+    this.nextCompetitorEnter = this.game.time.time + this.delayToNextCompetitor;
     this.nextSlotIndex = 0;
 
     this.hiscore = 0;
@@ -40,6 +42,8 @@ class Gameplay extends Phaser.State {
   preload() {
     Competitor.preload(this.load);
     PlayerCompany.preload(this.load);
+
+    this.load.spritesheet("timer", "/images/competitors/timer_next.png", 72, 73);
   }
 
   create() {
@@ -72,7 +76,19 @@ class Gameplay extends Phaser.State {
     if(this.player.budget > this.hiscore)
       this.hiscore = this.player.budget;
 
+    this.updateTimer();
     this.maybeIntroduceNewCompetitors();
+  }
+
+  private updateTimer() {
+    var diffTime = Math.ceil(this.nextCompetitorEnter - this.time.time);
+    if(diffTime <= 8000 && !this.currentTimer) {
+      var nextSlot = this.competitorSlots[this.nextSlotIndex];
+      this.currentTimer = nextSlot.createSlotTimer(this.add, () => {
+        this.currentTimer.destroy();
+        this.currentTimer = null;
+      });
+    }
   }
 
   private updateCompetitors() {
@@ -99,7 +115,7 @@ class Gameplay extends Phaser.State {
       this.nextSlotIndex++;
       if(this.nextSlotIndex >= this.competitorSlots.length)
         this.nextSlotIndex = 0;
-    } else if(this.time.time >= this.delayToNextCompetitor + this.lastCompetitorEnter) {
+    } else if(this.time.time >= this.nextCompetitorEnter) {
       var slot = this.competitorSlots[this.nextSlotIndex];
       if(slot.competitor)
         slot.competitor.destroy();
@@ -125,7 +141,7 @@ class Gameplay extends Phaser.State {
     competitor.create(this.game);
     slot.competitor = competitor;
     this.state = GameplayState.Idle;
-    this.lastCompetitorEnter = this.time.time;
+    this.nextCompetitorEnter = this.time.time + this.delayToNextCompetitor;
 
     console.debug("--- done");
   }
