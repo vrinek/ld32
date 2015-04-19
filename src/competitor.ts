@@ -171,11 +171,7 @@ class Competitor extends Company {
   die() {
     console.debug("competitor is dying");
     this.destroy();
-
-    // award some growth to the player
-    var numOfCompetitors = 3;
-    this.player.growth -= this.growth/numOfCompetitors;
-
+    this.player.countKill(this);
     console.debug("--- done");
   }
 

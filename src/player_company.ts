@@ -7,6 +7,11 @@ class PlayerCompany extends Company {
   protected rumbleOffset = 10;
   private building: Phaser.Image;
 
+  static levelCap = 5;
+  static killsPerLevel = [3, 5, 10, 20];
+  private killsToNextLevel = PlayerCompany.killsPerLevel[0];
+  private level = 1;
+
   constructor(gameplay: Gameplay) {
     super(gameplay, PlayerCompany.startingMoney);
   }
@@ -36,6 +41,20 @@ class PlayerCompany extends Company {
     this.shakingEffect(this.building);
   }
 
+  countKill(otherCompany: Competitor) {
+    this.killsToNextLevel--;
+
+    // award some growth to the player
+    this.growth -= otherCompany.growth/3;
+
+    if(this.killsToNextLevel == 0 && this.level < PlayerCompany.levelCap) {
+      console.debug("Ding!");
+      this.level++;
+      this.building.frame = this.level - 1;
+      this.killsToNextLevel = PlayerCompany.killsPerLevel[this.level - 1];
+    }
+  }
+
   static preload(load: Phaser.Loader) {
     load.spritesheet("building", "/images/player/building.png", 144, 155);
     load.image("large_growth_up", "/images/player/growth_up.png");
@@ -52,6 +71,7 @@ class PlayerCompany extends Company {
     this.group = game.make.group();
 
     this.building = game.make.image(136, 245, "building");
+    this.building.frame = 0;
     this.group.add(this.building);
 
     var bmarkMid = game.make.image(48, 25, "bmark_mid");

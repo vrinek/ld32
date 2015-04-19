@@ -7,12 +7,10 @@ class Gameplay extends Phaser.State {
   public competitors: Array<Competitor> = [];
 
   private competitorSlots: Array<CompetitorSlot> = [null, null, null];
-  private competitorData = [
-    {bulletDelay: 3500, startingBudget:  800},
-    {bulletDelay: 3000, startingBudget: 2000},
-    {bulletDelay: 2500, startingBudget: 5000},
-    {bulletDelay: 1000, startingBudget: 9000},
-  ];
+  private nextCompetitorData = {
+    bulletDelay: 3000,
+    startingBudget: 500
+  };
 
   private state = GameplayState.Idle;
   private delayToNextCompetitor = 10000; // 10 seconds
@@ -65,8 +63,6 @@ class Gameplay extends Phaser.State {
   private maybeIntroduceNewCompetitors() {
     if(this.state == GameplayState.IntroducingCompetitor)
       return;
-    if(this.competitorData.length == 0)
-      return;
 
     var emptySlots = [];
     for (let i = 0; i < this.competitorSlots.length; i++) {
@@ -91,11 +87,17 @@ class Gameplay extends Phaser.State {
     }
   }
 
+  private prepareNextCompetitorData() {
+    this.nextCompetitorData.bulletDelay *= 0.9;
+    this.nextCompetitorData.startingBudget *= 1.2;
+  }
+
   private introduceNewCompetitor(slot: CompetitorSlot) {
     console.debug("Introducing a new competitor");
 
-    var data = this.competitorData.shift();
+    var data = this.nextCompetitorData;
     var competitor = new Competitor(this, this.player, data.bulletDelay, data.startingBudget);
+    this.prepareNextCompetitorData();
 
     competitor.create(this.game);
     slot.competitor = competitor;
