@@ -1,5 +1,4 @@
 class Competitor extends Company {
-  static startingBudget = 1000;
   static lowScale = 0.4;
   static highScale = 1;
 
@@ -14,8 +13,13 @@ class Competitor extends Company {
   protected bulletKey = "silver_bullet";
   protected bulletDuration = 2500; // 2.5 seconds
 
-  constructor (gameplay: Gameplay, private player: PlayerCompany, private delayToAttack: number) {
-    super(gameplay, Competitor.startingBudget);
+  constructor (
+    gameplay: Gameplay,
+    private player: PlayerCompany,
+    private delayToAttack: number,
+    private startingBudget: number
+  ) {
+    super(gameplay, startingBudget);
   }
 
   get hitTarget(): Phaser.Point {
@@ -138,10 +142,10 @@ class Competitor extends Company {
   }
 
   private scaleByBudget() {
-    var effectiveBudget = Phaser.Math.clamp(this.budget, 0, Competitor.startingBudget);
+    var effectiveBudget = Phaser.Math.clamp(this.budget, 0, this.startingBudget);
     var newScale = Phaser.Math.linearInterpolation(
       [Competitor.lowScale, Competitor.highScale],
-      effectiveBudget/Competitor.startingBudget
+      effectiveBudget/this.startingBudget
     );
     this.building.scale.setTo(newScale);
   }

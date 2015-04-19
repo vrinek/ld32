@@ -5,9 +5,9 @@ class Gameplay extends Phaser.State {
   init() {
     this.player = new PlayerCompany(this);
     this.competitors = [
-      new Competitor(this, this.player, 2500),
-      new Competitor(this, this.player, 4000),
-      new Competitor(this, this.player, 3000),
+      new Competitor(this, this.player, 2500, 1000),
+      new Competitor(this, this.player, 4000, 2000),
+      new Competitor(this, this.player, 3000, 5000),
     ];
 
     this.game.stage.backgroundColor = "#666";
