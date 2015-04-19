@@ -8,9 +8,9 @@ class Gameplay extends Phaser.State {
 
   private competitorSlots: Array<CompetitorSlot> = [null, null, null];
   private competitorData = [
-    {bulletDelay: 2500, startingBudget: 100},
-    {bulletDelay: 4000, startingBudget: 200},
-    {bulletDelay: 3000, startingBudget: 500},
+    {bulletDelay: 2500, startingBudget: 1000},
+    {bulletDelay: 4000, startingBudget: 2000},
+    {bulletDelay: 3000, startingBudget: 5000},
   ]
 
   private state = GameplayState.Idle;
