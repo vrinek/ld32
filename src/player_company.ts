@@ -48,7 +48,7 @@ class PlayerCompany extends Company {
     this.group.add(this.growthDisplay);
 
     this.growthIndicator = game.make.image(
-      180, 370, "growth_up"
+      180, 370, "large_growth_up"
     );
     this.group.add(this.growthIndicator);
 

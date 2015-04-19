@@ -70,7 +70,7 @@ class Competitor extends Company {
     this.group.add(this.growthDisplay);
 
     this.growthIndicator = game.make.image(
-      180, 70, "growth_up"
+      180, 70, "small_growth_up"
     );
     this.group.add(this.growthIndicator);
 
