@@ -39,7 +39,7 @@ class PlayerCompany extends Company {
   preload() {
     var load = this.gameplay.load;
 
-    load.image("building", "/images/player/building.png");
+    load.spritesheet("building", "/images/player/building.png", 144, 155);
     load.image("large_growth_up", "/images/player/growth_up.png");
     load.image("large_growth_down", "/images/player/growth_down.png");
     load.image("player_bullet", "/images/player/bullet.png");
