@@ -1,5 +1,4 @@
-/// <reference path="game.ts" />
-
+var game;
 window.onload = () => {
-  var game = new Game();
+  game = new Game();
 }
