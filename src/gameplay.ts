@@ -26,27 +26,35 @@ class Gameplay extends Phaser.State {
   create() {
     this.game.stage.backgroundColor = "#666";
 
-    for (let i = 0; i < this.competitorSlots.length; i++) {
-      var slot = new CompetitorSlot(this.game);
-      slot.position.setTo(600, 100 + i*160);
-      this.world.add(slot);
-      this.competitorSlots.push(slot);
-    }
+    this.createCompetitorSlots();
 
     var playerCompanyGroup = this.player.create(this.game);
     playerCompanyGroup.position.setTo(0, 0);
     this.world.add(playerCompanyGroup);
   }
 
+  private createCompetitorSlots() {
+    for (let i = 0; i < this.competitorSlots.length; i++) {
+      var slot = new CompetitorSlot(this.game);
+      slot.position.setTo(600, 100 + i*160);
+      this.world.add(slot);
+      this.competitorSlots[i] = slot;
+    }
+  }
+
   update() {
+    this.updateCompetitors();
+    this.player.update(this.time);
+
+    this.maybeIntroduceNewCompetitors();
+  }
+
+  private updateCompetitors() {
     for (let i = 0; i < this.competitorSlots.length; i++) {
       var slot = this.competitorSlots[i];
       if(slot.competitor)
         slot.competitor.update(this.time);
     }
-    this.player.update(this.time);
-
-    this.maybeIntroduceNewCompetitors();
   }
 
   private maybeIntroduceNewCompetitors() {
@@ -85,11 +93,15 @@ class Gameplay extends Phaser.State {
   }
 
   render() {
+    this.renderCompetitors();
+    this.player.render();
+  }
+
+  private renderCompetitors() {
     for (let i = 0; i < this.competitorSlots.length; i++) {
       var slot = this.competitorSlots[i];
       if(slot.competitor)
         slot.competitor.render();
     }
-    this.player.render();
   }
 }
