@@ -13,6 +13,7 @@ class Competitor extends Company {
   private building: Phaser.Image;
   private attackBar: Phaser.Image;
   private attackButton: Phaser.Button;
+  private competitorHit: Phaser.Sound;
 
   private _onDestroy = new Phaser.Signal;
 
@@ -37,13 +38,15 @@ class Competitor extends Company {
   }
 
   takeDamage(damage) {
+    if(this.state != CompetitorState.Alive) return;
+
     Company.prototype.takeDamage.apply(this, [damage]);
 
+    this.competitorHit.play();
     this.shakingEffect(this.building);
   }
 
   static preload(load: Phaser.Loader) {
-    console.debug("preloading competitor assets");
     load.spritesheet("attack_button", "images/competitors/attack_button.png", 93, 51);
 
     load.image("background", "images/competitors/background.png");
@@ -62,11 +65,13 @@ class Competitor extends Company {
     load.image("building06", "images/competitors/buildings/building06.png");
     load.image("building07", "images/competitors/buildings/building07.png");
     load.image("building08", "images/competitors/buildings/building08.png");
-    console.debug("--- done");
+
+    load.audio("competitor-hit", "sounds/competitor-hit.mp3");
   }
 
   create(game: Phaser.Game) {
-    console.debug("creating competitor");
+    this.competitorHit = game.sound.add("competitor-hit");
+
     this.group = game.make.group();
 
     this.background = game.make.image(
@@ -121,8 +126,6 @@ class Competitor extends Company {
     this.group.add(this.attackButton);
 
     this.state = CompetitorState.Appearing;
-
-    console.debug("--- done");
 
     return this.group;
   }
