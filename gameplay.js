@@ -32,7 +32,6 @@ var Gameplay = (function (_super) {
     Gameplay.prototype.preload = function () {
         Competitor.preload(this.load);
         PlayerCompany.preload(this.load);
-        this.load.spritesheet("timer", "images/competitors/timer_next.png", 72, 73);
         this.load.audio("gameover", "sounds/gameover.mp3");
     };
     Gameplay.prototype.create = function () {
@@ -74,15 +73,7 @@ var Gameplay = (function (_super) {
         this.maybeIntroduceNewCompetitors();
     };
     Gameplay.prototype.updateTimer = function () {
-        var _this = this;
         var diffTime = Math.ceil(this.nextCompetitorEnter - this.time.time);
-        if (diffTime <= 8000 && !this.currentTimer) {
-            var nextSlot = this.competitorSlots[this.nextSlotIndex];
-            this.currentTimer = nextSlot.createSlotTimer(this.add, function () {
-                _this.currentTimer.destroy();
-                _this.currentTimer = null;
-            });
-        }
     };
     Gameplay.prototype.updateCompetitors = function () {
         for (var i = 0; i < this.competitorSlots.length; i++) {
