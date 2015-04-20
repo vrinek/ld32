@@ -9,4 +9,16 @@
 
 h1 {
   font-family: 'bitOperatorPlus';
+  text-align: center;
+  color: #ff6;
+}
+
+#content {
+  width: 900px;
+  height: 600px;
+  margin: auto;
+}
+
+body {
+  background-color: black;
 }
