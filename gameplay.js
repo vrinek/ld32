@@ -33,13 +33,14 @@ var Gameplay = (function (_super) {
         Competitor.preload(this.load);
         PlayerCompany.preload(this.load);
         this.load.audio("gameover", "sounds/gameover.mp3");
+        this.load.image("help", "images/interface/help.png");
     };
     Gameplay.prototype.create = function () {
-        this.game.stage.backgroundColor = "#666";
         this.createCompetitorSlots();
         var playerCompanyGroup = this.player.create(this.game);
         playerCompanyGroup.position.setTo(0, 0);
         this.world.add(playerCompanyGroup);
+        this.displayHelp();
     };
     Gameplay.prototype.createCompetitorSlots = function () {
         for (var i = 0; i < this.competitorSlots.length; i++) {
@@ -57,6 +58,16 @@ var Gameplay = (function (_super) {
             _this.game.state.start("gameover", true, false, _this.hiscore);
         });
         gameover.play();
+    };
+    Gameplay.prototype.displayHelp = function () {
+        var help = this.add.image(10, 590, "help");
+        help.anchor.setTo(0, 1);
+        var slideOut = this.add.tween(help);
+        slideOut.to({ x: -400 }, 500, Phaser.Easing.Cubic.In, false, 10000);
+        slideOut.onComplete.add(function () {
+            help.destroy();
+        });
+        slideOut.start();
     };
     Gameplay.prototype.update = function () {
         if (this.state == GameplayState.ShowingGameover)
