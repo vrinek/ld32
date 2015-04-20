@@ -31,8 +31,7 @@ class CompetitorSlot extends Phaser.Group {
   }
 
   createSlotTimer(add: Phaser.GameObjectFactory, onCompleteCallback: () => void) {
-    var timer = add.sprite(860, this.y + 70, "timer");
-    timer.scale.setTo(0.5);
+    var timer = add.sprite(710, this.y + 70, "timer");
     timer.anchor.setTo(0.5);
 
     timer.animations.add("countdown");
