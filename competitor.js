@@ -49,6 +49,7 @@ var Competitor = (function (_super) {
         load.image("attack_bar_back", "images/competitors/attack_bar_back.png");
         load.image("dollar_prize", "images/competitors/dollar_prize.png");
         load.spritesheet("silver_bullet", "images/competitors/bullet.png", 25, 25, 7);
+        load.spritesheet("person", "images/competitors/person.png", 16, 16);
         load.image("building01", "images/competitors/buildings/building01.png");
         load.image("building02", "images/competitors/buildings/building02.png");
         load.image("building03", "images/competitors/buildings/building03.png");
@@ -181,9 +182,41 @@ var Competitor = (function (_super) {
         console.debug("--- done");
     };
     Competitor.prototype.destroy = function () {
+        var _this = this;
         this.state = CompetitorState.Disappearing;
-        this._onDestroy.dispatch();
-        this.group.destroy();
+        var flatten = this.gameplay.add.tween(this.building.scale);
+        var dropDown = this.gameplay.add.tween(this.group);
+        var fadeOut = this.gameplay.add.tween(this.group);
+        dropDown.to({ y: this.group.y + 100 }, 300);
+        dropDown.onComplete.add(function () {
+            _this._onDestroy.dispatch();
+            _this.group.destroy();
+        });
+        fadeOut.to({ alpha: 0 }, 300);
+        flatten.to({ x: 1, y: 0 }, 300, Phaser.Easing.Exponential.In);
+        flatten.onComplete.add(function () {
+            var globalPoint = _this.group.toGlobal(_this.building.position);
+            for (var i = 0; i < 6; i++) {
+                _this.initializeUnemployed(globalPoint);
+            }
+            dropDown.start();
+            fadeOut.start();
+        });
+        flatten.start();
+    };
+    Competitor.prototype.initializeUnemployed = function (globalPoint) {
+        var myTargetX = globalPoint.x + this.gameplay.rnd.between(-60, 60);
+        var person = this.gameplay.add.sprite(myTargetX, globalPoint.y + this.gameplay.rnd.between(-10, 10), "person");
+        person.anchor.setTo(0.5, 0.5);
+        person.animations.add("walking", [12, 13, 14, 15]);
+        person.animations.play("walking", 5, true);
+        var duration = 3000 + this.gameplay.rnd.between(-500, 500);
+        var walkingOut = this.gameplay.add.tween(person);
+        walkingOut.to({ x: myTargetX + 350 }, duration);
+        walkingOut.onComplete.add(function () {
+            person.destroy();
+        });
+        walkingOut.start();
     };
     Competitor.prototype.render = function () {
         if (this.state != CompetitorState.Alive)
@@ -197,7 +230,7 @@ var Competitor = (function (_super) {
             this.growthIndicator.loadTexture("small_growth_down", 0);
         }
     };
-    Competitor.lowScale = 0.4;
+    Competitor.lowScale = 0.6;
     Competitor.highScale = 1;
     return Competitor;
 })(Company);
