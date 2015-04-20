@@ -1,5 +1,5 @@
 enum GameplayState {
-  Idle, IntroducingCompetitor
+  Idle, IntroducingCompetitor, ShowingGameover
 }
 
 class Gameplay extends Phaser.State {
@@ -44,6 +44,7 @@ class Gameplay extends Phaser.State {
     PlayerCompany.preload(this.load);
 
     this.load.spritesheet("timer", "images/competitors/timer_next.png", 72, 73);
+    this.load.audio("gameover", "sounds/gameover.mp3");
   }
 
   create() {
@@ -65,9 +66,22 @@ class Gameplay extends Phaser.State {
     }
   }
 
-  update() {
-    if(this.player.budget <= 0) {
+  private showGameover() {
+    this.state = GameplayState.ShowingGameover;
+    var gameover = this.sound.add("gameover");
+    gameover.onStop.add(() => {
       this.game.state.start("gameover", true, false, this.hiscore);
+    });
+    gameover.play();
+  }
+
+  update() {
+    if(this.state == GameplayState.ShowingGameover)
+      return;
+
+    if(this.player.budget <= 0) {
+      this.showGameover();
+      return;
     }
 
     this.updateCompetitors();
