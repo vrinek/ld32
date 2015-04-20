@@ -19,8 +19,6 @@ class Gameplay extends Phaser.State {
 
   private hiscore: number;
 
-  private currentTimer: Phaser.Sprite;
-
   init() {
     this.competitors = []
     this.competitorSlots = [null, null, null];
@@ -43,7 +41,6 @@ class Gameplay extends Phaser.State {
     Competitor.preload(this.load);
     PlayerCompany.preload(this.load);
 
-    this.load.spritesheet("timer", "images/competitors/timer_next.png", 72, 73);
     this.load.audio("gameover", "sounds/gameover.mp3");
   }
 
@@ -96,13 +93,6 @@ class Gameplay extends Phaser.State {
 
   private updateTimer() {
     var diffTime = Math.ceil(this.nextCompetitorEnter - this.time.time);
-    if(diffTime <= 8000 && !this.currentTimer) {
-      var nextSlot = this.competitorSlots[this.nextSlotIndex];
-      this.currentTimer = nextSlot.createSlotTimer(this.add, () => {
-        this.currentTimer.destroy();
-        this.currentTimer = null;
-      });
-    }
   }
 
   private updateCompetitors() {
