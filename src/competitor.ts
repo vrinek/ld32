@@ -15,6 +15,7 @@ class Competitor extends Company {
   private attackButton: Phaser.Button;
   private competitorHitSound: Phaser.Sound;
   private competitorDieSound: Phaser.Sound;
+  private bulletCollectSound: Phaser.Sound;
 
   private _onDestroy = new Phaser.Signal;
 
@@ -69,11 +70,13 @@ class Competitor extends Company {
 
     load.audio("competitor-hit", "sounds/competitor-hit.mp3");
     load.audio("competitor-die", "sounds/competitor-destroyed.mp3");
+    load.audio("bullet-collect", "sounds/coin-collect.mp3");
   }
 
   create(game: Phaser.Game) {
     this.competitorHitSound = game.sound.add("competitor-hit");
     this.competitorDieSound = game.sound.add("competitor-die");
+    this.bulletCollectSound = game.sound.add("bullet-collect");
 
     this.group = game.make.group();
 
@@ -173,6 +176,7 @@ class Competitor extends Company {
     newBullet.inputEnabled = true;
     newBullet.events.onInputDown.add(() => {
       this.gameplay.tweens.removeFrom(newBullet);
+      this.bulletCollectSound.play();
       newBullet.destroy();
       this.player.budget += 100;
     });
