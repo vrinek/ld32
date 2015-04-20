@@ -47,6 +47,7 @@ var Competitor = (function (_super) {
         load.image("small_growth_down", "images/competitors/growth_down.png");
         load.image("attack_bar", "images/competitors/attack_bar.png");
         load.image("attack_bar_back", "images/competitors/attack_bar_back.png");
+        load.image("dollar_prize", "images/competitors/dollar_prize.png");
         load.spritesheet("silver_bullet", "images/competitors/bullet.png", 25, 25, 7);
         load.image("building01", "images/competitors/buildings/building01.png");
         load.image("building02", "images/competitors/buildings/building02.png");
@@ -121,12 +122,29 @@ var Competitor = (function (_super) {
         newBullet.animations.play("spining", 20, true);
         newBullet.inputEnabled = true;
         newBullet.events.onInputDown.add(function () {
-            _this.gameplay.tweens.removeFrom(newBullet);
-            _this.bulletCollectSound.play();
-            newBullet.destroy();
-            _this.player.budget += 100;
+            _this.consumeBullet(newBullet);
         });
         return newBullet;
+    };
+    Competitor.prototype.consumeBullet = function (bullet) {
+        this.gameplay.tweens.removeFrom(bullet);
+        this.bulletCollectSound.play();
+        var dollarPrize = this.gameplay.add.image(bullet.x, bullet.y, "dollar_prize");
+        dollarPrize.anchor.setTo(0.5);
+        dollarPrize.scale.setTo(0);
+        var fadeInTime = 300;
+        var stayTime = 200;
+        var fadeOutTime = 200;
+        var dollarIn = this.gameplay.add.tween(dollarPrize.scale);
+        dollarIn.to({ x: 1, y: 1 }, fadeInTime, Phaser.Easing.Elastic.Out);
+        var dollarOut = this.gameplay.add.tween(dollarPrize.scale);
+        dollarOut.to({ x: 0, y: 0 }, fadeOutTime, Phaser.Easing.Exponential.Out, false, stayTime);
+        dollarIn.onComplete.add(function () {
+            dollarOut.start();
+        });
+        dollarIn.start();
+        bullet.destroy();
+        this.player.budget += 100;
     };
     Competitor.prototype.update = function (time) {
         if (this.state != CompetitorState.Alive)
