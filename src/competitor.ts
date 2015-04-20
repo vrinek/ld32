@@ -3,7 +3,7 @@ enum CompetitorState {
 }
 
 class Competitor extends Company {
-  static lowScale = 0.4;
+  static lowScale = 0.6;
   static highScale = 1;
 
   private nextAttackTime: number;
@@ -59,6 +59,7 @@ class Competitor extends Company {
     load.image("attack_bar_back", "images/competitors/attack_bar_back.png");
     load.image("dollar_prize", "images/competitors/dollar_prize.png");
     load.spritesheet("silver_bullet", "images/competitors/bullet.png", 25, 25, 7);
+    load.spritesheet("person", "images/competitors/person.png", 16, 16);
 
     load.image("building01", "images/competitors/buildings/building01.png");
     load.image("building02", "images/competitors/buildings/building02.png");
@@ -254,8 +255,52 @@ class Competitor extends Company {
   // Removes the competitor without awarding anything to the player.
   destroy() {
     this.state = CompetitorState.Disappearing;
-    this._onDestroy.dispatch();
-    this.group.destroy();
+
+    var flatten = this.gameplay.add.tween(this.building.scale);
+    var dropDown = this.gameplay.add.tween(this.group);
+    var fadeOut = this.gameplay.add.tween(this.group);
+
+    dropDown.to({y: this.group.y + 100}, 300);
+    dropDown.onComplete.add(() => {
+      this._onDestroy.dispatch();
+      this.group.destroy();
+    });
+
+    fadeOut.to({alpha: 0}, 300);
+
+    flatten.to({x: 1, y: 0}, 300, Phaser.Easing.Exponential.In);
+    flatten.onComplete.add(() => {
+      var globalPoint = this.group.toGlobal(this.building.position);
+      for (let i = 0; i < 6; i++) {
+        this.initializeUnemployed(globalPoint);
+      }
+
+      dropDown.start();
+      fadeOut.start();
+    });
+
+    flatten.start();
+  }
+
+  private initializeUnemployed(globalPoint: PIXI.Point) {
+    var myTargetX = globalPoint.x + this.gameplay.rnd.between(-60, 60);
+    var person = this.gameplay.add.sprite(
+      myTargetX,
+      globalPoint.y + this.gameplay.rnd.between(-10, 10),
+      "person"
+    );
+    person.anchor.setTo(0.5, 0.5);
+
+    person.animations.add("walking", [12, 13, 14, 15]);
+    person.animations.play("walking", 5, true);
+
+    var duration = 3000 + this.gameplay.rnd.between(-500, 500);
+    var walkingOut = this.gameplay.add.tween(person);
+    walkingOut.to({x: myTargetX + 350}, duration);
+    walkingOut.onComplete.add(() => {
+      person.destroy();
+    });
+    walkingOut.start();
   }
 
   render() {
