@@ -57,6 +57,7 @@ class Competitor extends Company {
     load.image("small_growth_down", "images/competitors/growth_down.png");
     load.image("attack_bar", "images/competitors/attack_bar.png");
     load.image("attack_bar_back", "images/competitors/attack_bar_back.png");
+    load.image("dollar_prize", "images/competitors/dollar_prize.png");
     load.spritesheet("silver_bullet", "images/competitors/bullet.png", 25, 25, 7);
 
     load.image("building01", "images/competitors/buildings/building01.png");
@@ -175,13 +176,34 @@ class Competitor extends Company {
 
     newBullet.inputEnabled = true;
     newBullet.events.onInputDown.add(() => {
-      this.gameplay.tweens.removeFrom(newBullet);
-      this.bulletCollectSound.play();
-      newBullet.destroy();
-      this.player.budget += 100;
+      this.consumeBullet(newBullet);
     });
 
     return newBullet;
+  }
+
+  private consumeBullet(bullet: Phaser.Sprite) {
+    this.gameplay.tweens.removeFrom(bullet);
+    this.bulletCollectSound.play();
+
+    var dollarPrize = this.gameplay.add.image(bullet.x, bullet.y, "dollar_prize");
+    dollarPrize.anchor.setTo(0.5);
+    dollarPrize.scale.setTo(0);
+
+    var fadeInTime = 300;
+    var stayTime = 200;
+    var fadeOutTime = 200;
+    var dollarIn = this.gameplay.add.tween(dollarPrize.scale);
+    dollarIn.to({x: 1, y: 1}, fadeInTime, Phaser.Easing.Elastic.Out);
+    var dollarOut = this.gameplay.add.tween(dollarPrize.scale);
+    dollarOut.to({x: 0, y: 0}, fadeOutTime, Phaser.Easing.Exponential.Out, false, stayTime);
+    dollarIn.onComplete.add(() => {
+      dollarOut.start();
+    })
+    dollarIn.start();
+
+    bullet.destroy();
+    this.player.budget += 100;
   }
 
   update(time: Phaser.Time) {
