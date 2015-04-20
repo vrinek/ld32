@@ -42,6 +42,7 @@ class Gameplay extends Phaser.State {
     PlayerCompany.preload(this.load);
 
     this.load.audio("gameover", "sounds/gameover.mp3");
+    this.load.image("help", "images/interface/help.png");
   }
 
   create() {
@@ -52,6 +53,8 @@ class Gameplay extends Phaser.State {
     var playerCompanyGroup = this.player.create(this.game);
     playerCompanyGroup.position.setTo(0, 0);
     this.world.add(playerCompanyGroup);
+
+    this.displayHelp();
   }
 
   private createCompetitorSlots() {
@@ -70,6 +73,18 @@ class Gameplay extends Phaser.State {
       this.game.state.start("gameover", true, false, this.hiscore);
     });
     gameover.play();
+  }
+
+  private displayHelp() {
+    var help = this.add.image(10, 590, "help");
+    help.anchor.setTo(0, 1);
+
+    var slideOut = this.add.tween(help);
+    slideOut.to({x: -400}, 500, Phaser.Easing.Cubic.In, false, 10000);
+    slideOut.onComplete.add(() => {
+      help.destroy();
+    });
+    slideOut.start();
   }
 
   update() {
