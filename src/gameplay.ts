@@ -22,6 +22,8 @@ class Gameplay extends Phaser.State {
   private currentTimer: Phaser.Sprite;
 
   init() {
+    this.game.stage.disableVisibilityChange = true;
+
     this.competitors = []
     this.competitorSlots = [null, null, null];
     this.nextCompetitorData = {
