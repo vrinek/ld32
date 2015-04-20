@@ -6,6 +6,7 @@ class Game {
 
     this.game.state.add("gameplay", new Gameplay());
     this.game.state.add("gameover", new Gameover());
+
     this.game.state.start("gameplay");
   }
 }

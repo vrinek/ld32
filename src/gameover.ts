@@ -8,6 +8,7 @@ class Gameover extends Phaser.State {
   preload() {
     this.load.image("gameover_popup", "images/interface/gameover_popup.png");
     this.load.spritesheet("play_button", "images/interface/play_button.png", 93, 51);
+    this.load.audio("play-again", "sounds/play-again.mp3")
   }
 
   create() {
@@ -18,7 +19,11 @@ class Gameover extends Phaser.State {
     popup.anchor.setTo(0.5, 0.5);
 
     var button = this.add.button(centerX, 500, "play_button", () => {
-      this.game.state.start("gameplay");
+      var playAgain = this.game.sound.add("play-again");
+      playAgain.onStop.add(() => {
+        this.game.state.start("gameplay");
+      });
+      playAgain.play();
     }, this, 1, 0, 2);
     button.anchor.setTo(0.5, 0.5);
 
