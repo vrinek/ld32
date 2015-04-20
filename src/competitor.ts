@@ -13,8 +13,8 @@ class Competitor extends Company {
   private building: Phaser.Image;
   private attackBar: Phaser.Image;
   private attackButton: Phaser.Button;
-  private competitorHit: Phaser.Sound;
-  private competitorDie: Phaser.Sound;
+  private competitorHitSound: Phaser.Sound;
+  private competitorDieSound: Phaser.Sound;
 
   private _onDestroy = new Phaser.Signal;
 
@@ -43,7 +43,7 @@ class Competitor extends Company {
 
     Company.prototype.takeDamage.apply(this, [damage]);
 
-    this.competitorHit.play();
+    this.competitorHitSound.play();
     this.shakingEffect(this.building);
   }
 
@@ -72,8 +72,8 @@ class Competitor extends Company {
   }
 
   create(game: Phaser.Game) {
-    this.competitorHit = game.sound.add("competitor-hit");
-    this.competitorDie = game.sound.add("competitor-die");
+    this.competitorHitSound = game.sound.add("competitor-hit");
+    this.competitorDieSound = game.sound.add("competitor-die");
 
     this.group = game.make.group();
 
@@ -219,7 +219,7 @@ class Competitor extends Company {
   // Kills the competitor and awards growth to the player.
   die() {
     console.debug("competitor is dying");
-    this.competitorDie.play();
+    this.competitorDieSound.play();
     this.destroy();
     this.player.countKill(this);
     console.debug("--- done");

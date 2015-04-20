@@ -6,12 +6,13 @@ class PlayerCompany extends Company {
 
   protected rumbleOffset = 10;
   private building: Phaser.Image;
-  private playerHit: Phaser.Sound;
+  private playerHitSound: Phaser.Sound;
 
   static levelCap = 5;
   static killsPerLevel = [3, 5, 10, 20];
   private killsToNextLevel = PlayerCompany.killsPerLevel[0];
   private level = 1;
+  private levelUpSound: Phaser.Sound;
 
   constructor(gameplay: Gameplay) {
     super(gameplay, PlayerCompany.startingMoney);
@@ -39,7 +40,7 @@ class PlayerCompany extends Company {
   takeDamage(damage) {
     Company.prototype.takeDamage.apply(this, [damage]);
 
-    this.playerHit.play();
+    this.playerHitSound.play();
     this.shakingEffect(this.building);
   }
 
@@ -50,11 +51,16 @@ class PlayerCompany extends Company {
     this.growth -= otherCompany.growth/3;
 
     if(this.killsToNextLevel == 0 && this.level < PlayerCompany.levelCap) {
-      console.debug("Ding!");
-      this.level++;
-      this.building.frame = this.level - 1;
-      this.killsToNextLevel = PlayerCompany.killsPerLevel[this.level - 1];
+      this.levelUp();
     }
+  }
+
+  private levelUp() {
+    console.debug("Ding!");
+    this.level++;
+    this.levelUpSound.play();
+    this.building.frame = this.level - 1;
+    this.killsToNextLevel = PlayerCompany.killsPerLevel[this.level - 1];
   }
 
   static preload(load: Phaser.Loader) {
@@ -69,10 +75,12 @@ class PlayerCompany extends Company {
     load.image("budget_circle", "images/player/budget_circle.png");
 
     load.audio("player-hit", "sounds/player-hit.mp3");
+    load.audio("level-up", "sounds/levelup.mp3");
   }
 
   create(game: Phaser.Game) {
-    this.playerHit = game.sound.add("player-hit");
+    this.playerHitSound = game.sound.add("player-hit");
+    this.levelUpSound = game.sound.add("level-up");
 
     this.group = game.make.group();
 
