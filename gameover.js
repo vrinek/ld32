@@ -13,8 +13,8 @@ var Gameover = (function (_super) {
         this.hiscore = arguments[0];
     };
     Gameover.prototype.preload = function () {
-        this.load.image("gameover_popup", "/images/interface/gameover_popup.png");
-        this.load.spritesheet("play_button", "/images/interface/play_button.png", 93, 51);
+        this.load.image("gameover_popup", "images/interface/gameover_popup.png");
+        this.load.spritesheet("play_button", "images/interface/play_button.png", 93, 51);
     };
     Gameover.prototype.create = function () {
         var _this = this;
