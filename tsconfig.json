@@ -18,6 +18,7 @@
         "./src/competitor.ts",
         "./src/competitor_slot.ts",
         "./src/game.ts",
+        "./src/game_start.ts",
         "./src/gameover.ts",
         "./src/gameplay.ts",
         "./src/player_company.ts",

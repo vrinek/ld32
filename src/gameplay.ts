@@ -46,8 +46,6 @@ class Gameplay extends Phaser.State {
   }
 
   create() {
-    this.game.stage.backgroundColor = "#666";
-
     this.createCompetitorSlots();
 
     var playerCompanyGroup = this.player.create(this.game);
