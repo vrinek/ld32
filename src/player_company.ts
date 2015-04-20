@@ -6,6 +6,7 @@ class PlayerCompany extends Company {
 
   protected rumbleOffset = 10;
   private building: Phaser.Image;
+  private playerHit: Phaser.Sound;
 
   static levelCap = 5;
   static killsPerLevel = [3, 5, 10, 20];
@@ -38,6 +39,7 @@ class PlayerCompany extends Company {
   takeDamage(damage) {
     Company.prototype.takeDamage.apply(this, [damage]);
 
+    this.playerHit.play();
     this.shakingEffect(this.building);
   }
 
@@ -65,9 +67,13 @@ class PlayerCompany extends Company {
     load.image("bmark_mid", "images/player/bmark_mid.png");
     load.image("budget_cash", "images/player/budget_cash.png");
     load.image("budget_circle", "images/player/budget_circle.png");
+
+    load.audio("player-hit", "sounds/player-hit.mp3");
   }
 
   create(game: Phaser.Game) {
+    this.playerHit = game.sound.add("player-hit");
+
     this.group = game.make.group();
 
     this.building = game.make.image(136, 245, "building");
