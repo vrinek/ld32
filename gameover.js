@@ -15,6 +15,7 @@ var Gameover = (function (_super) {
     Gameover.prototype.preload = function () {
         this.load.image("gameover_popup", "images/interface/gameover_popup.png");
         this.load.spritesheet("play_button", "images/interface/play_button.png", 93, 51);
+        this.load.audio("play-again", "sounds/play-again.mp3");
     };
     Gameover.prototype.create = function () {
         var _this = this;
@@ -23,7 +24,11 @@ var Gameover = (function (_super) {
         var popup = this.add.image(centerX, centerY, "gameover_popup");
         popup.anchor.setTo(0.5, 0.5);
         var button = this.add.button(centerX, 500, "play_button", function () {
-            _this.game.state.start("gameplay");
+            var playAgain = _this.game.sound.add("play-again");
+            playAgain.onStop.add(function () {
+                _this.game.state.start("gameplay");
+            });
+            playAgain.play();
         }, this, 1, 0, 2);
         button.anchor.setTo(0.5, 0.5);
         this.add.text(centerX, 80, "HIGHEST BUDGET", { font: "28px bitOperatorPlus", fill: "black" }).anchor.set(0.5, 0.5);

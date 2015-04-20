@@ -33,11 +33,13 @@ var Competitor = (function (_super) {
         configurable: true
     });
     Competitor.prototype.takeDamage = function (damage) {
+        if (this.state != CompetitorState.Alive)
+            return;
         Company.prototype.takeDamage.apply(this, [damage]);
+        this.competitorHitSound.play();
         this.shakingEffect(this.building);
     };
     Competitor.preload = function (load) {
-        console.debug("preloading competitor assets");
         load.spritesheet("attack_button", "images/competitors/attack_button.png", 93, 51);
         load.image("background", "images/competitors/background.png");
         load.image("budget_icon", "images/competitors/budget_icon.png");
@@ -54,11 +56,15 @@ var Competitor = (function (_super) {
         load.image("building06", "images/competitors/buildings/building06.png");
         load.image("building07", "images/competitors/buildings/building07.png");
         load.image("building08", "images/competitors/buildings/building08.png");
-        console.debug("--- done");
+        load.audio("competitor-hit", "sounds/competitor-hit.mp3");
+        load.audio("competitor-die", "sounds/competitor-destroyed.mp3");
+        load.audio("bullet-collect", "sounds/coin-collect.mp3");
     };
     Competitor.prototype.create = function (game) {
         var _this = this;
-        console.debug("creating competitor");
+        this.competitorHitSound = game.sound.add("competitor-hit");
+        this.competitorDieSound = game.sound.add("competitor-die");
+        this.bulletCollectSound = game.sound.add("bullet-collect");
         this.group = game.make.group();
         this.background = game.make.image(0, 0, "background");
         this.group.add(this.background);
@@ -88,7 +94,6 @@ var Competitor = (function (_super) {
         this.attackButton.position.setTo(110, 125);
         this.group.add(this.attackButton);
         this.state = CompetitorState.Appearing;
-        console.debug("--- done");
         return this.group;
     };
     Competitor.prototype.appear = function (add) {
@@ -117,6 +122,7 @@ var Competitor = (function (_super) {
         newBullet.inputEnabled = true;
         newBullet.events.onInputDown.add(function () {
             _this.gameplay.tweens.removeFrom(newBullet);
+            _this.bulletCollectSound.play();
             newBullet.destroy();
             _this.player.budget += 100;
         });
@@ -151,6 +157,7 @@ var Competitor = (function (_super) {
     });
     Competitor.prototype.die = function () {
         console.debug("competitor is dying");
+        this.competitorDieSound.play();
         this.destroy();
         this.player.countKill(this);
         console.debug("--- done");

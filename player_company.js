@@ -35,17 +35,22 @@ var PlayerCompany = (function (_super) {
     };
     PlayerCompany.prototype.takeDamage = function (damage) {
         Company.prototype.takeDamage.apply(this, [damage]);
+        this.playerHitSound.play();
         this.shakingEffect(this.building);
     };
     PlayerCompany.prototype.countKill = function (otherCompany) {
         this.killsToNextLevel--;
         this.growth -= otherCompany.growth / 3;
         if (this.killsToNextLevel == 0 && this.level < PlayerCompany.levelCap) {
-            console.debug("Ding!");
-            this.level++;
-            this.building.frame = this.level - 1;
-            this.killsToNextLevel = PlayerCompany.killsPerLevel[this.level - 1];
+            this.levelUp();
         }
+    };
+    PlayerCompany.prototype.levelUp = function () {
+        console.debug("Ding!");
+        this.level++;
+        this.levelUpSound.play();
+        this.building.frame = this.level - 1;
+        this.killsToNextLevel = PlayerCompany.killsPerLevel[this.level - 1];
     };
     PlayerCompany.preload = function (load) {
         load.spritesheet("building", "images/player/building.png", 144, 155);
@@ -56,8 +61,12 @@ var PlayerCompany = (function (_super) {
         load.image("bmark_mid", "images/player/bmark_mid.png");
         load.image("budget_cash", "images/player/budget_cash.png");
         load.image("budget_circle", "images/player/budget_circle.png");
+        load.audio("player-hit", "sounds/player-hit.mp3");
+        load.audio("level-up", "sounds/levelup.mp3");
     };
     PlayerCompany.prototype.create = function (game) {
+        this.playerHitSound = game.sound.add("player-hit");
+        this.levelUpSound = game.sound.add("level-up");
         this.group = game.make.group();
         this.building = game.make.image(136, 245, "building");
         this.building.frame = 0;

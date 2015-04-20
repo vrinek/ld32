@@ -8,6 +8,7 @@ var GameplayState;
 (function (GameplayState) {
     GameplayState[GameplayState["Idle"] = 0] = "Idle";
     GameplayState[GameplayState["IntroducingCompetitor"] = 1] = "IntroducingCompetitor";
+    GameplayState[GameplayState["ShowingGameover"] = 2] = "ShowingGameover";
 })(GameplayState || (GameplayState = {}));
 var Gameplay = (function (_super) {
     __extends(Gameplay, _super);
@@ -32,6 +33,7 @@ var Gameplay = (function (_super) {
         Competitor.preload(this.load);
         PlayerCompany.preload(this.load);
         this.load.spritesheet("timer", "images/competitors/timer_next.png", 72, 73);
+        this.load.audio("gameover", "sounds/gameover.mp3");
     };
     Gameplay.prototype.create = function () {
         this.game.stage.backgroundColor = "#666";
@@ -48,9 +50,21 @@ var Gameplay = (function (_super) {
             this.competitorSlots[i] = slot;
         }
     };
+    Gameplay.prototype.showGameover = function () {
+        var _this = this;
+        this.state = GameplayState.ShowingGameover;
+        var gameover = this.sound.add("gameover");
+        gameover.onStop.add(function () {
+            _this.game.state.start("gameover", true, false, _this.hiscore);
+        });
+        gameover.play();
+    };
     Gameplay.prototype.update = function () {
+        if (this.state == GameplayState.ShowingGameover)
+            return;
         if (this.player.budget <= 0) {
-            this.game.state.start("gameover", true, false, this.hiscore);
+            this.showGameover();
+            return;
         }
         this.updateCompetitors();
         this.player.update(this.time);

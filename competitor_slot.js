@@ -33,12 +33,14 @@ var CompetitorSlot = (function (_super) {
         configurable: true
     });
     CompetitorSlot.prototype.createSlotTimer = function (add, onCompleteCallback) {
-        var timer = add.sprite(860, this.y + 70, "timer");
-        timer.scale.setTo(0.5);
+        var timer = add.sprite(710, this.y + 70, "timer");
         timer.anchor.setTo(0.5);
         timer.animations.add("countdown");
         timer.animations.play("countdown", 1, false);
         timer.animations.currentAnim.onComplete.add(onCompleteCallback);
+        var disappearing = add.tween(timer.scale);
+        disappearing.to({ x: 0, y: 0 }, 400, Phaser.Easing.Cubic.Out, true, 8000);
+        disappearing.start();
         return timer;
     };
     return CompetitorSlot;
