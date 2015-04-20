@@ -38,6 +38,10 @@ class CompetitorSlot extends Phaser.Group {
     timer.animations.play("countdown", 1, false);
     timer.animations.currentAnim.onComplete.add(onCompleteCallback);
 
+    var disappearing = add.tween(timer.scale);
+    disappearing.to({x: 0, y: 0}, 400, Phaser.Easing.Cubic.Out, true, 8000);
+    disappearing.start();
+
     return timer;
   }
 }
